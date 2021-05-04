@@ -1,0 +1,66 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Day 1: Introduction and Ethics
+
+## Pre-arrival 
+
+- Materiais disponíveis em: https://sicss.io/curriculum
+
+### Introduction to Computational Social Science
+
+- O que é Ciência Social Computacional? Resistir a vontade de criar uma definição formal da área de CSC neste momento. 
+  - Essa área está mudando rapidamente, então a definição seria diferente em poucos anos. Evitar definir as "fronteiras" de CSC. 
+  - CSC também é, de certa forma, um movimento social: as pessoas estão tentando mudar a forma com que algumas pesquisas acontecem. Ser aberto para receber contribuições de diversas pessoas possibilita que a área de conhecimento cresça.
+  
+- Exemplo de estudo: [Predicting poverty and wealth from mobile phone metadata - 
+Joshua Blumenstock, Gabriel Cadamuro, Robert On](https://science.sciencemag.org/content/350/6264/1073/tab-pdf) - Utilizaram dados telefônicos + Survey com uma amostra pequena + ML. Obtiveram resultados similares aos dados sobre demografia e saúde de um outro Survey promovido pelo governo dos EUA, porém 10 vezes mais rápido e 50 vezes mais barato. A Survey que foi usada para comparação costuma ser realizada a cada 5 anos. Considerando que essa forma é mais rápida e muito mais barata, seria possível coletar as informações com mais frequência.
+
+- Aprender com essas grandes fontes de dados é uma das áreas que está crescendo mais rápido em CSC.
+
+- Qual é uma pergunta interessante a fazer? Como coletar as informações para responder essa pergunta? Como fazer estimativas que tenham sentido para as pessoas que tomam decisões (_policy makers_)?
+
+- CSC: 
+  - uma combinação de computação e ciências sociais.
+  - muitas vezes envolvem questões éticas e de privacidade, que atualmente são consideradas complexas.
+  - combina dados "readymade" e "custommade":
+    - "Readymade" - mais ilustrativo do estilo usado em ciência de dados. criatividade para utilizar dados que foram criados para um propósito, e dar um novo propósito. Ex do estudo: usaram dados telefônicos, mas o novo propósito foi investigar a pobreza.    
+    - "Custommade" - mais ilustrativo do estilo usado em ciências sociais. Os dados foram criados por um propósito e são usados para o mesmo. 
+  - Inclui 5 comunidades chaves: ciências sociais, ciência de dados, negócios, tomadores de decisão, "defensores" da privacidade (privacy advocates).
+  - CSC - as mudanças estão sendo conduzidas por  mudanças que estão ocorrendo no mundo. O volume de dados criados e armazenados de forma digital tem dobrado a cada dois anos nos últimos anos. Podemos usar a oportunidade de utilizar estes dados, ou podemos ficar para trás.
+  - Dados digitais são criados em todos os lugares. Ex: IOT, alexa. 
+  - CSC e técnicas digitais - não subtituem outras técnicas e profissionais, e sim complementam outras ferramentas que já existem. Nossos objetivos como pessoas pesquisadoras continuam os mesmos, mas CSC pode nos ajudar a atingir os objetivos mais rápidos.  
+  
+- Como criar uma comunidade de CSC? 
+  - Cientistas de dados e cientistas sociais trabalhando juntas(os), e cada grupo entendendo que tem coisas que podem aprender e também contribuir/ensinar.
+  - O que é Ciência de dados? Aprender com os dados.
+  - Sugestão de leitura: [50 years of Data Science - David Donoho](https://www.tandfonline.com/doi/full/10.1080/10618600.2017.1384734)
+  - Pessoas de diferentes contextos disciplinares tem percepções diferentes do que é importante ou interessante em termos de pesquisa. Tentar entender as perspectivas disciplinares das outras pessoas!
+  
+
+|  Ciência da computação |  Ciência Social | 
+|--:|--:|
+|  Estuda vários temas |  Estuda temas sociais |
+|  Guiado por métodos |  Guiado por questões | 
+|  Usa dados já existentes (bases grandes) |  Usa dados coletados (bases pequenas) |
+|  Busca prever |  Busca explicar |
+
+
+
+### Why SICSS?
+
+### Ethics: Part 1
+
+### Ethics: Part 2
+
+### Ethics Additions and Extensions
