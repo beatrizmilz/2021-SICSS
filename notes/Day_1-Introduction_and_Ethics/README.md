@@ -71,9 +71,9 @@
     -   Cientistas de dados e cientistas sociais trabalhando juntas(os),
         e cada grupo entendendo que tem coisas que podem aprender e
         também contribuir/ensinar.
+
     -   O que é Ciência de dados? Aprender com os dados.
-    -   Sugestão de leitura: [50 years of Data Science - David
-        Donoho](https://www.tandfonline.com/doi/full/10.1080/10618600.2017.1384734)
+
     -   Pessoas de diferentes contextos disciplinares tem percepções
         diferentes do que é importante ou interessante em termos de
         pesquisa. Tentar entender as perspectivas disciplinares das
@@ -86,7 +86,40 @@
 | Usa dados já existentes (bases grandes) | Usa dados coletados (bases pequenas) |
 |                            Busca prever |                       Busca explicar |
 
+Leituras:
+
+-   [ ] [Predicting poverty and wealth from mobile phone
+    metadata](https://science.sciencemag.org/content/350/6264/1073/tab-pdf) -
+    Joshua Blumenstock, Gabriel Cadamuro, Robert On
+
+-   [ ] [50 years of Data
+    Science](https://www.tandfonline.com/doi/full/10.1080/10618600.2017.1384734) -
+    David Donoho
+
 ### Why SICSS?
+
+-   Pq a SICSS foi criada? Muitos desafios: seja na área de pesquisa,
+    como na sociedade.
+    -   Grandes problemas - Existem diversas questões no mundo que
+        necessitavam das ferramentas de CSC para resolvê-las. Ex.
+        COVID-19.
+    -   É uma área que está crescendo rapidamente (e em várias direções)
+    -   Precisamos aprender a crescer juntos para conseguir encontrar
+        soluções para os problemas
+    -   Oportunidades de treinamento de qualidade são raras.
+-   Objetivos da SICSS:
+    -   Oferecer treinamentos de qualidade e atualizados
+        (state-of-the-art training)
+    -   Desafiar as fronteiras disciplinares: Quanto mais
+        interdisciplinares os times de pesquisa são, maior impacto eles
+        tem.
+    -   Alcançar uma grande audiência. A diversidade também será
+        importante para o crescimento da CSC.
+    -   Material open-source: disponibilizar aulas, videos, códigos, e
+        outros materiais de estudo para que todas as pessoas
+        interessadas possam acessar.
+    -   Ensinar as pessoas que ensinam! Para que as pessoas que
+        participam do SICSS possa ensinar outras pessoas futuramente.
 
 ### Ethics: Part 1
 
