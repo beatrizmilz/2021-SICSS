@@ -17,3 +17,18 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 Anotações sobre o [2021 Summer Institute in Computational Social Science](https://sicss.io/2021/fgv-dapp-brazil/).
+
+
+## Anotações prévias
+
+- [ ] [Day 1: Introduction and Ethics](notes/Day_1-Introduction_and_Ethics/README.Rmd)
+
+- [ ] Day 2: Collecting Digital Trace Data
+
+- [ ] Day 3: Automated Text Analysis
+
+- [ ] Day 4: Surveys in the Digital Age
+
+- [ ] Day 5: Mass Collaboration
+
+- [ ] Day 6: Experiments

@@ -79,6 +79,38 @@ Leituras:
 
 ### Ethics: Part 1
 
+- Esse conteúdo é abordado [no livro de referência: Bit by bit](https://www.bitbybitbook.com/en/1st-ed/ethics/). 
+
+- Cientistas sociais computacionais devem se preocupar com ética. Como comunidade, deveríamos construir normas, padrões e valores que compartilhamos, para aumentar a chance de realizar pesquisas importantes e interessantes. Estamos próximos à áreas "cinzas" em termos éticos (*ethical gray areas*).
+
+- Como pessoas pesquisadoras, precisamos explicar bem para outras pessoas como resolvemos um problema.
+
+- 2 abordagens (ambas limitadas!):
+  - Rules-based approach: seguir o que o IRB (Institutional Review Board) define (comentário Bia: segundo a explicação dada no video, o IRB me parece com os comitês de ética em pesquisa no Brasil). Regras que foram escritas em outros contextos, está desatualizada e são difíceis de atualizar. Essa abordagem também dificulta explicar as escolhas para outras pessoas. 
+  - Ad hoc approach: pensando por si mesmos, na falta dessas regras e de um debate com a comunidade. Isso dificulta a criação de padrões éticos aceitos pela comunidade.
+
+Temos o poder de coletar e usar informações de pessoas, sem que elas saibam disso e deem o consentimento. Não é claro o que podemos fazer, e as regras mudam lentamente. Nem os experts de privacidade tem consensos sobre esses temas! 
+
+
+A abordagem preferida pelo professor é uma abordagem baseada em princípios *Principles-based approach*.  
+
+- Princípios: 
+  - Respeito pelas pessoas: as pessoas participantes decidem, e não as pessoas pesquisadoras. Respeitar a autonomia das pessoas participantes. As pessoas precisam ter autonomia para decidir que se querem participar do estudo ou não. Consentimento informado. (Comentário Bia: no nosso caso essa discussão parece que se conecta com a ideia do Termo de Consentimento Livre e Esclarecido)
+  - Beneficiência: minimizar o risco para as pessoas participantes, maximizar os benefícios, e decidir se o estudo deve continuar. Foi feito tudo possível para minimizar o risco para as pessoas participantes? As pessoas pesquisadoras responsáveis pelo estudo não constumam ser as pessoas adequadas para avaliar se os riscos e benefícios estão balanceados. Pessoas externas podem ser importantes nessa avaliação!
+  - Justiça: distribuição justa dos malefícios e benefícios da pesquisa. Muitas pesquisas foram feitas com grupos/populações vulneráveis, ex: prisioneiros, pessoas que não tiveram acesso à educação, cidadão destituído de direitos, pessoas com deficiênciais mentais, pacientes de hospitais idosos ou debilitados, entre outros. Outra questão é o acesso do grupo de pessoas que participaram da pesquisa terem acesso aos benefícios da pesquisa. 
+  - respeito pela lei e pelo interesse público: 1) compliance (seguir as leis), e 2) accountability baseada em transparência (*transparency-based accountability*). 1) Muitas vezes é confuso/tricky seguir as leis, pois algumas coisas não são claras, principalmente em estudos internacionais. 2) Não devemos fazer a pesquisa secretamente, devemos fazer as coisas abertamente e deixar público para as pessoas. Ex: publicar artigos em revistas de acesso aberto.
+
+Nenhum princípio é mais importante que outro! Esses princípios envolvem tradeoffs.
+
+Dois frameworks éticos em conflito, e ambos podem ser extremos e levar a consequências perversas:
+  - Consequentialism (focus on ends)
+  - Deontology (focus on means)
+  
+
 ### Ethics: Part 2
 
+Previsão: 07/05
+
 ### Ethics Additions and Extensions
+
+Previsão: 08/05
