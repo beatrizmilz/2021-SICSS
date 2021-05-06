@@ -12,7 +12,7 @@ Science](https://sicss.io/2021/fgv-dapp-brazil/).
 ## Anotações prévias
 
 -   [ ] [Day 1: Introduction and
-    Ethics](notes/Day_1-Introduction_and_Ethics/README.Rmd)
+    Ethics](notes/Day_1-Introduction_and_Ethics/README.md)
 
 -   [ ] Day 2: Collecting Digital Trace Data
 

@@ -21,7 +21,7 @@ Anotações sobre o [2021 Summer Institute in Computational Social Science](http
 
 ## Anotações prévias
 
-- [ ] [Day 1: Introduction and Ethics](notes/Day_1-Introduction_and_Ethics/README.Rmd)
+- [ ] [Day 1: Introduction and Ethics](notes/Day_1-Introduction_and_Ethics/README.md)
 
 - [ ] Day 2: Collecting Digital Trace Data
 
