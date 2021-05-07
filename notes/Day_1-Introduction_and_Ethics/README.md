@@ -147,15 +147,16 @@ Leituras:
         e de um debate com a comunidade. Isso dificulta a criação de
         padrões éticos aceitos pela comunidade.
 
-Temos o poder de coletar e usar informações de pessoas, sem que elas
-saibam disso e deem o consentimento. Não é claro o que podemos fazer, e
-as regras mudam lentamente. Nem os experts de privacidade tem consensos
-sobre esses temas!
+-   Temos o poder de coletar e usar informações de pessoas, sem que elas
+    saibam disso e deem o consentimento. Não é claro o que podemos
+    fazer, e as regras mudam lentamente. Nem os experts de privacidade
+    tem consensos sobre esses temas!
 
-A abordagem preferida pelo professor é uma abordagem baseada em
-princípios *Principles-based approach*.
+-   A abordagem preferida pelo professor é uma abordagem baseada em
+    princípios *Principles-based approach*.
 
 -   Princípios:
+
     -   Respeito pelas pessoas: as pessoas participantes decidem, e não
         as pessoas pesquisadoras. Respeitar a autonomia das pessoas
         participantes. As pessoas precisam ter autonomia para decidir
@@ -187,16 +188,119 @@ princípios *Principles-based approach*.
         abertamente e deixar público para as pessoas. Ex: publicar
         artigos em revistas de acesso aberto.
 
-Nenhum princípio é mais importante que outro! Esses princípios envolvem
-tradeoffs.
+-   Nenhum princípio é mais importante que outro! Esses princípios
+    envolvem tradeoffs.
 
-Dois frameworks éticos em conflito, e ambos podem ser extremos e levar a
-consequências perversas: - Consequentialism (focus on ends) - Deontology
-(focus on means)
+-   Dois frameworks éticos em conflito, e ambos podem ser extremos e
+    levar a consequências perversas:
+
+    -   Consequentialism (focus on ends)
+    -   Deontology (focus on means)
 
 ### Ethics: Part 2
 
-Previsão: 07/05
+Aplicar esses princípios pode ser difícil. 4 tópicos principais:
+
+-   **Informed consent (consentimento informado)**
+    -   Senso comum: devemos obter o consentimento informado de todas as
+        pessoas que participam da pesquisa
+    -   Exemplo mostrado: a pesquisa que foi mostrada no exemplo não
+        utilizou consentimento informado, porém o argumento foi bem
+        construído (e a pesquisa não seria possível se fosse necessário
+        o consentimento informado). E foi realizado respeitando a lei (e
+        os IRBs)
+    -   Ideia melhor (saindo do senso comum): a maioria das pesquisas
+        deve usar alguma forma de consentimento.
+    -   O que está motivando a vontade de realizar o consentimento
+        informado? Respeito pelas pessoas ou beneficiência?
+-   **Entendendo e gerenciando o risco de informação**
+    -   Um dos maiores riscos na CSC é o risco de informação. Perigos na
+        divulgação/vazamento de informações pessoais pode ser: econômico
+        (ex. causar a demissão), social (ex. constrangimentos),
+        psicológicos (ex. depressão), criminal (ex. prisão por
+        atividades ilegais).
+    -   Senso comum: dados podem ser anonimizados, e sabemos quais dados
+        são sensíveis.
+    -   Exemplo mostrado: foi realizado um processo de
+        *de-identification* (desidentificação), removendo alguns dados
+        da base de dados para que não seja possível identificar as
+        pessoas participantes do estudo, entenderam que os dados foram
+        “anonimizados”. Outra equipe, a partir de desses dados
+        “anonimizados”, conseguiram identificar participantes da
+        pesquisa, cruzando os dados da pesquisa com dados de votação.
+        Existe riscos ao combinar diferentes bases de dados.
+    -   Outro exemplo: dados do netflix, onde foi possível
+        “des-anonimizar” e identificar as pessoas na base, e suas
+        preferências/notas dos filmes. Esses dados são sensíveis para
+        algumas pessoas.
+    -   Ideia melhor (saindo do senso comum): todos os dados são
+        potencialmente identificáveis e todos os dados são
+        potencialmente sensíveis.
+    -   Tendo um plano de proteção de dados sólido, a maioria das
+        pesquisas em CSC tem riscos mínimos em termos de informações
+-   Data protection plans - planos de proteção de dados
+    -   5 safes (plano de proteção de dados baseado em 5 proteções, por
+        [Desai et al
+        2016](https://uwe-repository.worktribe.com/output/914745/five-safes-designing-data-access-for-research)):
+        -   Projetos seguros: projetos com objetivos responsáveis e
+            permitidos eticamente
+        -   Pessoas seguras: todas as pessoas que tem acesso aos dados
+            tem que ter recebido treinamento apropriado e ter boas
+            intenções.
+        -   Dados seguros
+        -   Safe settigns
+        -   Safe output
+-   **Privacidade**
+    -   Senso comum: dicotomia do público/privado. Se for privado deve
+        ser protegido, se for público deve ser aberto.
+    -   Exemplo mostrado: carta enviada para residentes dizendo que
+        iriam publicar no jornal a lista de pessoas que não votaram na
+        eleição.
+    -   Ideia melhor (saindo do senso comum): integridade do contexto
+        (*contextual integrity*), pensar no fluxo de informação. A ideia
+        chave são “normas de informação relativas ao contexto”, pensar
+        em três dimensões:
+        -   atores (tema, remetente, destinatário);
+        -   atributos (tipos de informação);
+        -   princípios de transmissão (restrições relativas ao fluxo de
+            informação).
+-   **Tomar decisões em face a incertezas**
+    -   Senso comum: better safe than sorry (princípio da precaução)
+    -   Exemplo mostrado: Em alguns casos, todas as abordagens oferecem
+        algum tipo de risco: alguém pode ser prejudicado pelo
+        experimento, ou também outra pessoa pode ser prejudicada se o
+        experimento não acontecer.
+    -   Ideia melhor (saindo do senso comum): não existe abordagem que
+        não apresenta riscos, e não devemos ver as coisas com uma visão
+        limitada (referência: [Sustein
+        2005](https://psycnet.apa.org/record/2005-05396-000)).
+
+Ways forward: - Minimal risk standard: tentar nivelar o risco para o
+nível que as pessoas estão expostas no dia-a-dia. - Power analysis: quão
+grande o estudo precisa ser? Mesmo os estudos com riscos mínimos
+oferecem algum risco. Não queremos que os estudos sejam maiores do que
+precisam ser, e não estamos colocando mais pessoas em risco do que o
+necessário. - Ethical-response surveys: descrever um estudo que estamos
+imaginando/planejando fazer, e fazemos uma survey para um publico
+variado perguntando o que acham do estudo, e quais mudanças eles fariam
+para melhorar o estudo em termos éticos. - Staged trials: se não sabemos
+o risco, comece pequeno, em etapas, para focar na segurança. Exemplo dos
+medicamentos, vacina.
+
+-   Recomendações:
+
+    -   IRB é o mínimo, não o teto. Devemos seguir o que a IRB solicita.
+        Porém podemos pensar além para melhorar o “balanço” ético da
+        pesquisa.
+    -   Se imagine no lugar de outras pessoas :) se imagine no lugar das
+        pessoas participates do estudo, dos jornalistas, das pessoas da
+        família das participantes, etc.
+    -   Pense na ética em pesquisa em algo contínuo!
+
+-   Leituras:
+
+    -   [ ] [Desai et al
+        2016](https://uwe-repository.worktribe.com/output/914745/five-safes-designing-data-access-for-research)
 
 ### Ethics Additions and Extensions
 
