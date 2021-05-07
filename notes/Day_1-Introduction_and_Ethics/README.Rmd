@@ -146,7 +146,7 @@ Aplicar esses princípios pode ser difícil. 4 tópicos principais:
   - Exemplo mostrado: Em alguns casos, todas as abordagens oferecem algum tipo de risco: alguém pode ser prejudicado pelo experimento, ou também outra pessoa pode ser prejudicada se o experimento não acontecer.
   - Ideia melhor (saindo do senso comum): não existe abordagem que não apresenta riscos, e não devemos ver as coisas com uma visão limitada (referência: [Sustein 2005](https://psycnet.apa.org/record/2005-05396-000)).
     
-Ways forward:
+- Ways forward:
   - Minimal risk standard: tentar nivelar o risco para o nível que as pessoas estão expostas no dia-a-dia. 
   - Power analysis: quão grande o estudo precisa ser? Mesmo os estudos com riscos mínimos oferecem algum risco. Não queremos que os estudos sejam maiores do que precisam ser, e não estamos colocando mais pessoas em risco do que o necessário. 
   - Ethical-response surveys: descrever um estudo que estamos imaginando/planejando fazer, e fazemos uma survey para um publico variado perguntando o que acham do estudo, e quais mudanças eles fariam para melhorar o estudo em termos éticos.

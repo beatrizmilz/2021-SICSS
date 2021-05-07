@@ -202,6 +202,7 @@ Leituras:
 Aplicar esses princípios pode ser difícil. 4 tópicos principais:
 
 -   **Informed consent (consentimento informado)**
+
     -   Senso comum: devemos obter o consentimento informado de todas as
         pessoas que participam da pesquisa
     -   Exemplo mostrado: a pesquisa que foi mostrada no exemplo não
@@ -213,7 +214,9 @@ Aplicar esses princípios pode ser difícil. 4 tópicos principais:
         deve usar alguma forma de consentimento.
     -   O que está motivando a vontade de realizar o consentimento
         informado? Respeito pelas pessoas ou beneficiência?
+
 -   **Entendendo e gerenciando o risco de informação**
+
     -   Um dos maiores riscos na CSC é o risco de informação. Perigos na
         divulgação/vazamento de informações pessoais pode ser: econômico
         (ex. causar a demissão), social (ex. constrangimentos),
@@ -238,7 +241,9 @@ Aplicar esses princípios pode ser difícil. 4 tópicos principais:
         potencialmente sensíveis.
     -   Tendo um plano de proteção de dados sólido, a maioria das
         pesquisas em CSC tem riscos mínimos em termos de informações
+
 -   Data protection plans - planos de proteção de dados
+
     -   5 safes (plano de proteção de dados baseado em 5 proteções, por
         [Desai et al
         2016](https://uwe-repository.worktribe.com/output/914745/five-safes-designing-data-access-for-research)):
@@ -250,7 +255,9 @@ Aplicar esses princípios pode ser difícil. 4 tópicos principais:
         -   Dados seguros
         -   Safe settigns
         -   Safe output
+
 -   **Privacidade**
+
     -   Senso comum: dicotomia do público/privado. Se for privado deve
         ser protegido, se for público deve ser aberto.
     -   Exemplo mostrado: carta enviada para residentes dizendo que
@@ -264,7 +271,9 @@ Aplicar esses princípios pode ser difícil. 4 tópicos principais:
         -   atributos (tipos de informação);
         -   princípios de transmissão (restrições relativas ao fluxo de
             informação).
+
 -   **Tomar decisões em face a incertezas**
+
     -   Senso comum: better safe than sorry (princípio da precaução)
     -   Exemplo mostrado: Em alguns casos, todas as abordagens oferecem
         algum tipo de risco: alguém pode ser prejudicado pelo
@@ -275,17 +284,21 @@ Aplicar esses princípios pode ser difícil. 4 tópicos principais:
         limitada (referência: [Sustein
         2005](https://psycnet.apa.org/record/2005-05396-000)).
 
-Ways forward: - Minimal risk standard: tentar nivelar o risco para o
-nível que as pessoas estão expostas no dia-a-dia. - Power analysis: quão
-grande o estudo precisa ser? Mesmo os estudos com riscos mínimos
-oferecem algum risco. Não queremos que os estudos sejam maiores do que
-precisam ser, e não estamos colocando mais pessoas em risco do que o
-necessário. - Ethical-response surveys: descrever um estudo que estamos
-imaginando/planejando fazer, e fazemos uma survey para um publico
-variado perguntando o que acham do estudo, e quais mudanças eles fariam
-para melhorar o estudo em termos éticos. - Staged trials: se não sabemos
-o risco, comece pequeno, em etapas, para focar na segurança. Exemplo dos
-medicamentos, vacina.
+-   Ways forward:
+
+    -   Minimal risk standard: tentar nivelar o risco para o nível que
+        as pessoas estão expostas no dia-a-dia.
+    -   Power analysis: quão grande o estudo precisa ser? Mesmo os
+        estudos com riscos mínimos oferecem algum risco. Não queremos
+        que os estudos sejam maiores do que precisam ser, e não estamos
+        colocando mais pessoas em risco do que o necessário.
+    -   Ethical-response surveys: descrever um estudo que estamos
+        imaginando/planejando fazer, e fazemos uma survey para um
+        publico variado perguntando o que acham do estudo, e quais
+        mudanças eles fariam para melhorar o estudo em termos éticos.
+    -   Staged trials: se não sabemos o risco, comece pequeno, em
+        etapas, para focar na segurança. Exemplo dos medicamentos,
+        vacina.
 
 -   Recomendações:
 
