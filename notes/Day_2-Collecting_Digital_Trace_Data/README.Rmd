@@ -1,0 +1,40 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Day 2: Collecting Digital Trace Data
+
+## Pre-arrival 
+
+- Materiais disponíveis em: https://sicss.io/curriculum
+
+### What is Digital Trace Data?
+
+Previsto 10/05
+
+### Strengths and Weakness of Digital Trace Data
+
+Previsto 11/05
+
+
+### Application Programming Interfaces
+
+Previsto 12/05
+
+### Screen Scraping
+
+Previsto 13/05
+
+
+### Building Apps and Bots for Social Science Research
+
+Previsto 14/05

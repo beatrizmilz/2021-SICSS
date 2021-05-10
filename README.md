@@ -14,7 +14,8 @@ Science](https://sicss.io/2021/fgv-dapp-brazil/).
 -   [ ] [Day 1: Introduction and
     Ethics](notes/Day_1-Introduction_and_Ethics/README.md)
 
--   [ ] Day 2: Collecting Digital Trace Data
+-   [ ] [Day 2: Collecting Digital Trace
+    Data](notes/Day_2-Collecting_Digital_Trace_Data/README.md)
 
 -   [ ] Day 3: Automated Text Analysis
 
