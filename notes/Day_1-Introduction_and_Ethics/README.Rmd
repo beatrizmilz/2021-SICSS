@@ -166,4 +166,24 @@ Aplicar esses princípios pode ser difícil. 4 tópicos principais:
 
 ### Ethics Additions and Extensions
 
-Previsão: 08/05
+- 5 complementações pensadas desde a publicação do livro Bit by bit: 
+
+  - 1) Princípio do respeito pela lei e pelo interesse público
+    - Termos de uso: alguns estudos utilizam serviços de forma não consistente com os termos de uso. Pesquisa citada: https://dl.acm.org/doi/10.1145/2872427.2883016 . Se estiver pensando em fazer algo que viola os termos de uso de um serviço, pensar: estou disposta a escrever um trecho sobre ética (ethics statement) no artigo explicando isso? A justificativa para potencialmente violar os termos de uso é sólida como na pesquisa citada? 
+    - Sobre pesquisa "off the grid" (usa scraping que potencialmente viola os termos de uso do site): é possível perder a fonte de dados durante a pesquisa; pode ter dificuldade para obter financiamento, apresentando a pesquisa, para publicar, etc; é possível que não seja possível compartilhar os dados com outras pessoas pesquisadoras; pode dificultar que outras pessoas acadêmicas no futuro consigam acesso aos dados.
+    
+    - 2) Risco de informação (área de dificuldade quando aplicamos os princípios éticos em CSC): sobre o risco de divulgar/vazar informações sobre as pessoas que fazem parte da pesquisa. Mostrou outro exemplo de re-identificação, existem outras formas de re-identificar além de apenas cruzar com outras bases de dados.
+    
+    - 3) 5a área de dificuldade: usos secundários não antecipados. Situações onde a pesquisa ou dados da pesquisa são usados de uma forma que não foi planejada, e pode ser usado com más-intenções. Pensar: como o Lex Luthor usaria esses dados? Isso requer "adversarial thinking": antecipar e mitigar esses usos secundários.
+    
+    - 4) 4a dica prática: pensar em ética como uma oportunidade de pesquisa.
+    
+    - 5) Exemplo sobre o último tópico: [Privacy, Ethics, and Data Access: A Case Study of the Fragile Families Challenge](https://journals.sagepub.com/doi/10.1177/2378023118813023)
+    
+    
+    
+- Leituras/videos:
+  - [ ] [MapWatch: Detecting and Monitoring International Border Personalization on Online Maps](https://dl.acm.org/doi/10.1145/2872427.2883016)
+  - [ ] [SICSS 2018 Deen Freelon - Surviving the post-API age](https://www.youtube.com/watch?v=GWpCHh54pXU)
+  - [Evento - ACM Conference on Fairness, Accountability, and Transparency (ACM FAccT)](https://facctconference.org/)
+  - [ ] [Privacy, Ethics, and Data Access: A Case Study of the Fragile Families Challenge](https://journals.sagepub.com/doi/10.1177/2378023118813023)
