@@ -31,7 +31,38 @@ knitr::opts_chunk$set(
 
 ### Strengths and Weakness of Digital Trace Data
 
-Previsto 11/05
+- "Forças" da Digital trace data:
+
+  - Big: tem mais dados, e dados muito grandes! Avanços em poder computacional também permite que a gente consiga coletar/analisar esses dados.
+  
+  - Always on: sempre disponível. Exemplo: redes sociais apresentam um registro do que está acontecendo on-line. 
+  
+  - Non-reactive: não resulta de uma interação onde a pessoa pesquisadora pergunta a opinião de uma pessoa que está participando do estudo (ex. entrevista, survey, grupo focal, etc). Isso é bem relevante quando se trata de pesquisas onde as perguntas feitas na entrevista/survey/grupo focal são de temas que possam constranger as pessoas participantes, e que elas não queiram responder.
+  
+  - Capture social relationships: conseguimos dados das redes sociais. 
+  
+- "Fraquezas" da Digital trace data:
+
+  - Inaccessible: muito dos dados (e muitos dados valiosos para entender o comportamento humano) atualmente é inacessível, pois estão na posse de grandes empresas (como Google, Apple, Amazon, etc). Muitas vezes elas não podem disponibilizar essas bases de dados por questões legais. 
+
+  - Non-representative: os dados não representam a população inteira. Pensando em redes sociais: % de pessoas da população que usa essa rede, pensar na presença grupos em termos de idade, sexo, urbano/rural, grupos minoritários, etc. Se queremos estudar dados de, por exemplo, twitter, precisamos estar cientes dessas vieses. E essas porcentagens da população nas redes sociais muda ao longo do tempo, e entre as plataformas.  E se os dados conter vieses (bias), e não reflete fielmente a população que estamos tentando estudar? 
+  
+  - Drifting: as plataformas usadas mudam com o tempo, as pessoas migram de redes sociais (ex: myspace -> facebook). A relação entre as pessoas e as plataformas usadas também muda com o tempo. Então precisamos ter atenção à isso: se queremos estudar um intervalo de tempo, pensar em quais plataformas eram usadas nesse período (e por quem).
+  
+  - Algorithimically confounded: situação onde um algoritmo dentro de uma plataforma digital é alterado, e isso cria uma mudança no que vemos de comportamento humano. Interpretamos essa mudança como algo significativo, porém pode ser apenas a forma como as pessoas estão interagindo com o algoritmo. A caixa preta de ML: em alguns casos, não sabemos o que está causando algo.
+  
+  - Unstructured: os dados são bagunçados e não estruturados! A maior parte do tempo das pessoas que trabalham com ciência de dados é usada limpando e arrumando dados!
+  
+  - Sensitive: muitas pegadas digitais são informações privadas e sensíveis. Ex: dados de redes de relacionamento (ok cupid).
+  
+  - Incomplete: os dados podem estar incompletos. Em alguns casos está relacionado as regras da plataforma usada para coletar os dados.
+  
+  - Elite/publication bias: teremos uma fotografia distorcida da realidade. Em alguns casos, as informações encontradas são a visão de pessoas em situação privilegiada (ex comum em documentos históricos). Ex nas redes sociais: as pessoas estão postando coisas para fazer com que elas tenham mais status (look better).
+  
+  - Positivity-bias: Nas redes sociais, as pessoas postam mais coisas positivas, e não postam tanto as coisas negativas. 
+  
+  
+- O futuro do digital trace data: temos que encontrar formas de nos aproveitar das forças do DTD, ao mesmo tempo reconhecer as fraquezas de DTD (e lidar com isso). As melhores pesquisas futuras em CSC serão híbridas: usando dados ready-made e custom-made.
 
 
 ### Application Programming Interfaces
