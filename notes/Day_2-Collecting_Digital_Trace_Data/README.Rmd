@@ -150,7 +150,7 @@ names(tweets_salvos)
 ```
 - Criar um gráfico
 
-```{r, dpi = 300}
+```{r grafico_tweets, dpi = 300}
 dia_min <- format(min(tweets_salvos$created_at), "%d/%m")
 dia_max <- format(max(tweets_salvos$created_at), "%d/%m")
 
@@ -166,7 +166,7 @@ tweets_salvos %>%
 
 - Ver os tweets em uma região (EUA)
 
-```{r}
+```{r eval=FALSE, include=TRUE}
 geo_tweets <- rtweet::search_tweets(
   q = "rstats", # query para buscar
   n = 4000,  # número de tweets para coletar
@@ -190,7 +190,7 @@ geocoded <- rtweet::lat_lng(tweets_geo_salvos)
 ```
 
 
-```{r}
+```{r mapa_tweets_maps}
 # plotando o mapa com o pacote maps
 par(mar = c(0, 0, 0, 0))
 maps::map("world", lwd = .25)
@@ -203,7 +203,7 @@ with(geocoded, points(
 ))
 ```
 
-```{r}
+```{r mapa_tweets_sf}
 world <-
   rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
 

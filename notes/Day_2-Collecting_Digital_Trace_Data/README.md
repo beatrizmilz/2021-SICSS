@@ -291,7 +291,7 @@ tweets_salvos %>%
                 caption = "\nFonte: Dados coletados da API do Twitter, através do pacote {rtweet}.")
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-6-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/grafico_tweets-1.png" style="display: block; margin: auto;" />
 
 -   Ver os tweets em uma região (EUA)
 
@@ -331,7 +331,7 @@ with(geocoded, points(
 ))
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-9-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/mapa_tweets_maps-1.png" style="display: block; margin: auto;" />
 
 ``` r
 world <-
@@ -368,7 +368,7 @@ dia_max <- format(max(geocoded_filtrado_sf$created_at), "%d/%m")
   )
 ```
 
-<img src="README_files/figure-gfm/unnamed-chunk-10-1.png" style="display: block; margin: auto;" />
+<img src="README_files/figure-gfm/mapa_tweets_sf-1.png" style="display: block; margin: auto;" />
 
 -   No exemplo, mostrou mais coisas que podemos fazer com o pacote
     rtweet.
@@ -380,12 +380,12 @@ head(rtweet::rate_limit()[50:55, 1:4])
 #> # A tibble: 6 x 4
 #>   query                                             limit remaining reset       
 #>   <chr>                                             <int>     <int> <drtn>      
-#> 1 users/by/username/:source_username/following&POST    50        50 15.02709 mi…
-#> 2 users/:id/followers                                  15        15 15.02709 mi…
-#> 3 users/suggestions/:slug/members                      15        15 15.02709 mi…
-#> 4 users/:id/following                                  15        15 15.02709 mi…
-#> 5 users/:id/mentions                                  180       180 15.02709 mi…
-#> 6 users/by/username/:username                         900       900 15.02709 mi…
+#> 1 users/by/username/:source_username/following&POST    50        50 15.02261 mi…
+#> 2 users/:id/followers                                  15        15 15.02261 mi…
+#> 3 users/suggestions/:slug/members                      15        15 15.02261 mi…
+#> 4 users/:id/following                                  15        15 15.02261 mi…
+#> 5 users/:id/mentions                                  180       180 15.02261 mi…
+#> 6 users/by/username/:username                         900       900 15.02261 mi…
 ```
 
 -   Postar tweets: `rtweet::post_tweet()`
