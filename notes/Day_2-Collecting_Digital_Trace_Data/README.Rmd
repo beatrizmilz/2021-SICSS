@@ -7,7 +7,10 @@ output: github_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  dpi = 300,
+  fig.align = "center",
+  cache = TRUE
 )
 ```
 
@@ -65,9 +68,200 @@ knitr::opts_chunk$set(
 - O futuro do digital trace data: temos que encontrar formas de nos aproveitar das forças do DTD, ao mesmo tempo reconhecer as fraquezas de DTD (e lidar com isso). As melhores pesquisas futuras em CSC serão híbridas: usando dados ready-made e custom-made.
 
 
-### Application Programming Interfaces
+### Application Programming Interfaces (API)
 
-Previsto 12/05
+- O que é uma API? 
+
+  - É uma das principais ferramentas usadas na CSC que quer estudar digital trace data.
+  
+  - Possibilita coletar dados de algumas redes sociais, mas não apenas!
+  
+  - A API possibilita alguns grupos de pessoas a acessarem alguns tipos de dados. Os dados disponíveis pode depender devido às credenciais (credentials).
+  
+  - Muitas APIs não são públicas: existem dentro de uma empresa, ou entre duas companhias para transmitir dados.
+  
+  - O número de APIs está crescendo! Pesquisar por APIs
+    - [Programmable Web](https://www.programmableweb.com/category/all/apis)
+    - [Any API](https://any-api.com/)
+
+
+- Como uma API funciona?
+
+  - Para criar a URL para buscar dados em uma API: Base API URL + Requested Filds/Data (endpoints) + Data format requested (usually JSON) + Query + API Key (credential/token)
+  
+  - JSON é uma forma eficiente para armazenar dados, e é muito usado em API
+  
+  - Para usar a API, lemos a documentação para descobrir como criar as URLs que devemos usar. A documentação é um manual. 
+  
+  - API credential/access token: algumas APIs não pedem credenciais.
+  
+  - Rate limiting: uma API tem regras sobre a quantidade de dados que é permitido coletar em um intervalo determinado de tempo. Entender isso, e se necessário, colocar pausas no código. Throttling: o site mostra que está perto de atingir o rate limit e retorna os dados cada vez mais devagar.
+  
+  - Exemplo com twitter: buscar dados na API do twitter. Usar no maximo n = 18 mil. Essa busca com a API simples só busca os dados recentes. O argumento `retryonratelimit` da função `rtweet::search_tweets()` é útil nesse caso. 
+
+- Autenticando:
+
+```{r eval=FALSE, include=TRUE}
+# install.packages("rtweet")
+library(magrittr, include.only = "%>%")
+
+# A forma de realizar a autenticação mostrada no video 
+# estava gerando um erro. Nas issues do pacote, encontrei
+# outras pessoas com o mesmo erro. Uma das sugestões que
+# encontrei por lá é essa função bearer_token(), 
+# que funcionou bem :)
+
+rtweet::bearer_token()
+```
+
+- Buscando os tweets
+
+```{r  eval=FALSE, include=TRUE}
+# Fiz a pesquisa com outro termo..
+tweets <- rtweet::search_tweets(
+  q = "rstats", # query para buscar
+  n = 4000,  # número de tweets para coletar
+  include_rts = FALSE # queremos os RTs ou não?
+  )
+
+# salvei o resultado pra nao precisar ficar coletando
+# sempre que eu executar esse código (é demorado)
+
+readr::write_rds(tweets, file = "exemplo_tweets.Rds")
+```
+
+
+
+```{r}
+# abrindo os tweets salvos
+tweets_salvos <- readr::read_rds("exemplo_tweets.Rds")
+
+# carregando apenas o pipe:
+library(magrittr, include.only = "%>%") 
+
+# não quero ver a base toda, tem muitas colunas!
+tweets_salvos %>% 
+  dplyr::select(created_at, screen_name, text) 
+```
+
+- Quais são as colunas presentes?
+```{r}
+names(tweets_salvos)
+```
+- Criar um gráfico
+
+```{r, dpi = 300}
+dia_min <- format(min(tweets_salvos$created_at), "%d/%m")
+dia_max <- format(max(tweets_salvos$created_at), "%d/%m")
+
+tweets_salvos %>% 
+  rtweet::ts_plot(by = "hours") +
+  ggplot2::theme_minimal() + 
+  ggplot2::theme(plot.title = ggplot2::element_text(face = "bold")) +
+  ggplot2::labs(x = "Data", y = "Número de tweets",
+                title = glue::glue("Frequência de tweets sobre rstats, entre os dias {dia_min} e {dia_max}"),
+                subtitle = "Contagem de tweets agregado por hora",
+                caption = "\nFonte: Dados coletados da API do Twitter, através do pacote {rtweet}.")
+```
+
+- Ver os tweets em uma região (EUA)
+
+```{r}
+geo_tweets <- rtweet::search_tweets(
+  q = "rstats", # query para buscar
+  n = 4000,  # número de tweets para coletar
+  include_rts = FALSE, # queremos os RTs ou não?
+  geocode = rtweet::lookup_coords("usa"),
+  type = "recent"
+  )
+
+# salvei o resultado pra nao precisar ficar coletando
+# sempre que eu executar esse código (é demorado)
+
+readr::write_rds(geo_tweets, file = "exemplo_geo_tweets.Rds")
+```
+
+```{r}
+# abrindo os tweets salvos
+tweets_geo_salvos <- readr::read_rds("exemplo_geo_tweets.Rds")
+
+# arrumando as colunas lat long
+geocoded <- rtweet::lat_lng(tweets_geo_salvos)
+```
+
+
+```{r}
+# plotando o mapa com o pacote maps
+par(mar = c(0, 0, 0, 0))
+maps::map("world", lwd = .25)
+with(geocoded, points(
+  lng,
+  lat,
+  pch = 20,
+  cex = .50,
+  col = rgb(0, .3, .7, .75)
+))
+```
+
+```{r}
+world <-
+  rnaturalearth::ne_countries(scale = "medium", returnclass = "sf")
+
+sf_usa <-
+  world %>% dplyr::filter(admin == "United States of America")
+
+geocoded_filtrado_sf <- geocoded %>%
+  tidyr::drop_na(lat, lng) %>%
+  sf::st_as_sf(coords = c("lng", "lat"), crs = 4326)
+
+dia_min <- format(min(geocoded_filtrado_sf$created_at), "%d/%m")
+dia_max <- format(max(geocoded_filtrado_sf$created_at), "%d/%m")
+
+
+  geocoded_filtrado_sf %>% 
+  ggplot2::ggplot() +
+  ggplot2::geom_sf(data = sf_usa) +
+  ggplot2::geom_sf(color = rgb(0, .3, .7, .75)) +
+  ggplot2::theme_bw() +
+  ggplot2::coord_sf(xlim = c(-127, -65),
+                    ylim = c(23, 51),
+                    expand = FALSE) +
+  ggplot2::theme(plot.title = ggplot2::element_text(face = "bold")) +
+  ggplot2::labs(
+    x = "Longitude",
+    y = "Latitude",
+    title = glue::glue(
+      "Tweets sobre rstats entre os dias {dia_min} e {dia_max}"
+    ),
+    subtitle = "Tweets que informaram a localização, e postados nos EUA",
+    caption = "\nFonte: Dados coletados da API do Twitter, através do pacote {rtweet}."
+  )
+```
+
+- No exemplo, mostrou mais coisas que podemos fazer com o pacote rtweet. 
+
+- Função pra checar o rate limit: 
+
+```{r}
+head(rtweet::rate_limit()[50:55, 1:4])
+```
+
+-  Postar tweets: `rtweet::post_tweet()`
+
+- Podemos fazer um loop para repetir a busca :)
+
+- APIs podem ser usadas não apenas para coletar dados, mas também para visualização/análise/modelagem
+
+
+- Desafios ao trabalhar com APIs:
+
+  - Muitos dados ainda não estão disponíveis publicamente.
+  
+  - Cada API tem seus padrões, então aprender a usar uma API significa que precisamos ler com cuidado a documentação.
+  
+
+- O final do video está repetido. 
+
 
 ### Screen Scraping
 
