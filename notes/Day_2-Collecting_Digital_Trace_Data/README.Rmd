@@ -20,6 +20,8 @@ knitr::opts_chunk$set(
 
 - Materiais disponíveis em: https://sicss.io/curriculum
 
+> Importante: eu fiz pequenas modificações nos exercícios para não ficar exatamente igual ao código mostrado. Mas fiz os objetivos propostos :) , ex: coletar dados de uma API e fazer um gráfico, coletar dados do wikipedia, etc.
+
 ### What is Digital Trace Data?
 
 - "Pegadas digitais". Novas possibilidades de acompanhar/estudar o comportamento humano em maior escala. Enquanto interagimos com a tecnologia, estamos deixando rastros digitais" do nosso comportamento.
@@ -265,7 +267,90 @@ head(rtweet::rate_limit()[50:55, 1:4])
 
 ### Screen Scraping
 
-Previsto 13/05
+- Screen-scraping: tentar extrair dados de uma página da internet, e adicionar em uma base de dados.
+
+- Imagem interessante [no slide](https://sicss.io/2020/materials/day2-digital-trace-data/screenscraping/Rpres/Screenscraping.html#/2)
+
+- Sreen-scraping é permitido por lei? O melhor é buscar os dados em uma API. Consultar os termos de serviço do site que queremos fazer a raspagem, e também o arquivo robots.txt  . Além disso, ele aconselha conversar com a equipe da universidade que pode dar conselhos relacionados à questão legal.
+
+- Screen-scraping é frustrante
+
+- Ler a página web no R: pacote útil para isso é o {rvest}
+
+Exercício: iremos buscar dados do wikipedia.
+
+Busquei outra página, para ficar diferente do exemplo dado :)
+
+Caso alguém queira baixar os dados a seguir, ver: [wiki_naruto_shippuden.Rds](wiki_naruto_shippuden.Rds)
+
+```{r eval=FALSE, include=TRUE}
+url_wiki <-
+  "https://pt.wikipedia.org/wiki/Lista_de_epis%C3%B3dios_de_Naruto_Shippuden"
+
+wikipedia_page  <- rvest::read_html(url_wiki)
+
+buscar_tabela <- function(n_tabela, n_season) {
+  rvest::html_node(
+    wikipedia_page,
+    xpath = glue::glue('//*[@id="mw-content-text"]/div[1]/table[{n_tabela}]')
+  ) %>%
+    rvest::html_table() %>%
+    janitor::clean_names() %>%
+    dplyr::transmute(
+      temporada = n_season,
+      n_ep = as.character(no),
+      titulo = titulo_original,
+      data_de_estreia
+    )
+  }
+
+tabela_temporadas <- seq(4, 42, by = 2)
+
+tabela_suja <-
+  purrr::map2_dfr(tabela_temporadas, 1:20, buscar_tabela)
+
+
+eps_naruto_shippuden <- tabela_suja %>%
+  tidyr::separate(n_ep, into = c("n_ep", "tipo_episodio"), "\\(") %>%
+  dplyr::mutate(
+    n_ep = readr::parse_number(n_ep),
+    data_de_estreia = readr::parse_date(
+      data_de_estreia,
+      format = "%d de %B de %Y",
+      locale = readr::locale("pt")
+    ),
+    tipo_episodio = stringr::str_replace_all(tipo_episodio, "\\)", "")
+  ) %>%
+  tidyr::drop_na(n_ep) %>%
+  tibble::rowid_to_column() %>%
+  dplyr::filter(rowid %% 2 != 0) %>%
+  dplyr::select(-rowid)  %>% 
+  dplyr::mutate(tipo_episodio = dplyr::case_when(
+    is.na(tipo_episodio) ~ "Canon",
+    tipo_episodio == "½filler" ~ "Semi-filler",
+    TRUE ~ tipo_episodio
+  ))
+
+readr::write_rds(eps_naruto_shippuden, "wiki_naruto_shippuden.Rds")
+```
+
+```{r}
+eps_naruto_shippuden <- readr::read_rds("wiki_naruto_shippuden.Rds")
+
+eps_naruto_shippuden %>% knitr::kable()
+
+eps_naruto_shippuden %>% dplyr::count(tipo_episodio, name = "quantidade_episodios")
+```
+
+- RSelenium: precisa do java e docker. 
+
+- Screen scraping pode ser muito útil em alguns casos: quando não tem API e também não tem problemas legais.
+
+- Ficar de olho nos padrões das URLs.
+
+- O número de sites onde é permitido legalmente fazer screen scraping está diminuindo.
+
+
 
 
 ### Building Apps and Bots for Social Science Research
