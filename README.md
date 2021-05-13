@@ -25,3 +25,8 @@ Science](https://sicss.io/2021/fgv-dapp-brazil/).
 -   [ ] Day 5: Mass Collaboration
 
 -   [ ] Day 6: Experiments
+
+
+## Conteúdos complementares
+
+- [ ] [Course Data Science & Society - Duke University, Spring 2021](https://dssoc.github.io/schedule/) 
