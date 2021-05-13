@@ -11,13 +11,14 @@ Science](https://sicss.io/2021/fgv-dapp-brazil/).
 
 ## Anotações prévias
 
--   [ ] [Day 1: Introduction and
+-   [x] [Day 1: Introduction and
     Ethics](notes/Day_1-Introduction_and_Ethics/README.md)
 
--   [ ] [Day 2: Collecting Digital Trace
+-   [x] [Day 2: Collecting Digital Trace
     Data](notes/Day_2-Collecting_Digital_Trace_Data/README.md)
 
--   [ ] Day 3: Automated Text Analysis
+-   [ ] [Day 3: Automated Text
+    Analysis](notes/Day_3-Automated_Text_Analysis/README.md)
 
 -   [ ] Day 4: Surveys in the Digital Age
 
