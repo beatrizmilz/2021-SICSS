@@ -488,7 +488,8 @@ readr::write_rds(eps_naruto_shippuden, "wiki_naruto_shippuden.Rds")
 ``` r
 eps_naruto_shippuden <- readr::read_rds("wiki_naruto_shippuden.Rds")
 
-eps_naruto_shippuden %>% knitr::kable()
+eps_naruto_shippuden %>%
+  knitr::kable()
 ```
 
 | temporada | n\_ep | tipo\_episodio | titulo                                                                 | data\_de\_estreia |
@@ -995,16 +996,17 @@ eps_naruto_shippuden %>% knitr::kable()
 |        20 |   500 | Novel          | Palavras de Felicitações                                               | 2017-03-23        |
 
 ``` r
-eps_naruto_shippuden %>% dplyr::count(tipo_episodio, name = "quantidade_episodios")
+eps_naruto_shippuden %>%
+  dplyr::count(tipo_episodio, name = "quantidade_episodios", sort = TRUE)
 #> # A tibble: 6 x 2
 #>   tipo_episodio quantidade_episodios
 #>   <chr>                        <int>
 #> 1 Canon                          259
 #> 2 Filler                         188
-#> 3 Gaiden                           4
-#> 4 Novel                           25
-#> 5 Omake                            1
-#> 6 Semi-filler                     23
+#> 3 Novel                           25
+#> 4 Semi-filler                     23
+#> 5 Gaiden                           4
+#> 6 Omake                            1
 ```
 
 -   RSelenium: precisa do java e docker.
@@ -1019,4 +1021,55 @@ eps_naruto_shippuden %>% dplyr::count(tipo_episodio, name = "quantidade_episodio
 
 ### Building Apps and Bots for Social Science Research
 
-Previsto 14/05
+-   Relembrando as fraquezas de digital trace data: incomplete,
+    inaccessible, non-representative, drifting, algorithmic confounding,
+    dirty, sensitive.
+
+-   Quais são as alternativas?
+
+    -   Survey: taxa de resposta costuma ser baixa atualmente;
+
+    -   A maioria das nossas perguntas requer dados longitudinais,
+        quantitativos, relacionais.
+
+    -   Digital trace data: apresenta algumas vantagens que as fontes
+        mais comuns não apresentam, como: big, always on, non-reactive.
+        Apesar de ter desvantagens, as vantagens são muito boas!
+
+    -   Mostrou um exemplo de estudo hídbrido: teve o uso de social
+        trace data, e também de surveys para complementar os dados.
+
+    -   Social Media Survey Apps: uma ferramenta para web ou celular,
+        construída pelas pessoas pesquisadoras para:
+
+        -   Coletar dados públicos e/ou privados produzidos por pessoas
+            usuárias de redes sociais, através de uma API.
+
+        -   Coletar informações suplementares destas pessoas usuárias
+            (Ex. dados demográficos) utilizando métodos mais
+            convencionais de realizar surveys;
+
+        -   Oferecer algo em retorno para as pessoas usuárias, para
+            incentivar a ideia de compartilhar os dados (ex. alguma
+            análise ou incentivos financeiros)
+
+-   Desafios ao construir apps para pesquisas na ciências sociais:
+
+    -   É necessário alguns conhecimentos técnicos, como: html, css,
+        computação em nuvem, reactive programming
+
+    -   É um ambiente onde se compete pela atenção (os apps não são mais
+        “novos”)
+
+    -   Preocupações sobre o compartilhamento e privacidade dos dados
+
+    -   Incentivos convincentes são difíceis de identificar - e
+        particularmente desafiador em estudos de temas sensíveis. Mas os
+        incentivos financeiros podem ser uma opção importante para
+        avançar.
+
+-   Shiny apps!
+
+-   Bots tem uma má reputação, por terem sido usados para espalhar fake
+    news! Porém ao ser desenvolvido de forma ética, pode ser útil para
+    pesquisas em CSC. Existem diversas questões éticas sobre isso.
