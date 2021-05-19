@@ -139,9 +139,6 @@ trumptweets$text[1]
 trump_corpus <- tm::Corpus(tm::VectorSource(as.vector(trumptweets$text)))
 
 trump_corpus
-#> <<SimpleCorpus>>
-#> Metadata:  corpus specific: 1, document level (indexed): 0
-#> Content:  documents: 3196
 ```
 
 -   Outra abordagem: tidytext!
@@ -192,35 +189,37 @@ tidy_trump_tweets %>%
 ``` r
 tidy_trump_tweets_without_stop_words <- 
   tidy_trump_tweets %>% 
-  dplyr::anti_join(tidytext::stop_words)
+  dplyr::anti_join(tidytext::stop_words) %>% 
+  dplyr::filter(!word %in% c("https", "rt", "t.co", "amp"))
 #> Joining, by = "word"
 
 tidy_trump_tweets_without_stop_words  %>% 
   dplyr::count(word, sort = TRUE)
-#> # A tibble: 8,121 x 2
+#> # A tibble: 8,117 x 2
 #>    word          n
 #>    <chr>     <int>
-#>  1 https      1281
-#>  2 t.co       1258
-#>  3 amp         562
-#>  4 rt          351
-#>  5 people      302
-#>  6 news        271
-#>  7 president   235
-#>  8 fake        234
-#>  9 trump       218
-#> 10 country     213
-#> # … with 8,111 more rows
+#>  1 people      302
+#>  2 news        271
+#>  3 president   235
+#>  4 fake        234
+#>  5 trump       218
+#>  6 country     213
+#>  7 america     204
+#>  8 tax         190
+#>  9 u.s         186
+#> 10 time        173
+#> # … with 8,107 more rows
 ```
 
 -   Limpar o texto: ele mostrou com R Base, estou fazendo com tidyverse
 
 ``` r
 tidy_trump_tweets_filtered <-
-  tidy_trump_tweets_without_stop_words %>%
+  tidy_trump_tweets_without_stop_words %>% 
   dplyr::mutate(
     # remover números
-    word = tm::removeNumbers(word),
+    # word = tm::removeNumbers(word), # nao esta funcionando no 4.1.0
+    word =  gsub("\\d+", "", word),
     
     # substituir vírgula e ponto por nada
     word = stringr::str_replace_all(word, ",|\\.", ""),
@@ -269,11 +268,6 @@ tidy_trump_tweets_stem  %>%
 tidy_trump_tweets_stem %>% 
   dplyr::count(created_at, word) %>% 
   tidytext::cast_dtm(created_at, word, n)
-#> <<DocumentTermMatrix (documents: 3191, terms: 6193)>>
-#> Non-/sparse entries: 36583/19725280
-#> Sparsity           : 100%
-#> Maximal term length: 29
-#> Weighting          : term frequency (tf)
 ```
 
 > Livro [Text Mining with R - A Tidy
@@ -284,6 +278,187 @@ tidy_trump_tweets_stem %>%
 
 ### Dictionary-Based Text Analysis
 
+-   Formas sofisticadas de contagem de palavras, associadas com algum
+    lexicon (ou grupo de palavras) que contém algum tipo de significado.
+
+``` r
+top_words <- tidy_trump_tweets_filtered %>% 
+    dplyr::count(word, sort = TRUE)
+
+
+top_words |>
+  dplyr::slice(1:20) |>
+  dplyr::mutate(word = forcats::fct_reorder(word, n)) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_col(ggplot2::aes(
+    x = word,
+    y = n,
+    fill = word
+  )) +
+  ggplot2::scale_fill_viridis_d(direction = -1) +
+  ggplot2::coord_flip() +
+  ggplot2::theme_minimal() +
+  ggplot2::guides(fill = FALSE) +
+  ggplot2::labs(y = "Frequência", x = "Palavras", title = "Palavras mais frequentes nos tweets do Trump") +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, size = 18))
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-13-1.png" style="display: block; margin: auto;" />
+
+-   Term frequency inverse document frequency (tf-idf) (isso não tá
+    claro pra mim ainda)
+    -   Inverse document frequency (IDF): Give more weight to a term
+        occurring in less documents.
+    -   Função `bind_ft_idf()`
+
+``` r
+trump_tf_idf <- tidy_trump_tweets_filtered |> 
+  dplyr::count(word, created_at) |>
+  tidytext::bind_tf_idf(word, created_at, n) |>
+  dplyr::arrange(desc(tf_idf))
+
+trump_tf_idf |> head(10) |> knitr::kable()
+```
+
+| word              | created\_at         |   n |  tf |      idf |  tf\_idf |
+|:------------------|:--------------------|----:|----:|---------:|---------:|
+| eqmwvxbim         | 2017-11-15 10:58:18 |   1 |   1 | 8.068090 | 8.068090 |
+| hlzrlkif          | 2017-09-22 10:30:06 |   1 |   1 | 8.068090 | 8.068090 |
+| tdrycwnc          | 2017-11-12 14:29:22 |   1 |   1 | 8.068090 | 8.068090 |
+| umyjluid          | 2018-03-30 20:24:56 |   1 |   1 | 8.068090 | 8.068090 |
+| vlqyalcto         | 2018-04-14 01:31:56 |   1 |   1 | 8.068090 | 8.068090 |
+| vsmnwxtei         | 2017-09-17 11:57:20 |   1 |   1 | 8.068090 | 8.068090 |
+| ymuqsvvtsb        | 2017-10-05 10:46:02 |   1 |   1 | 8.068090 | 8.068090 |
+| yqxoaufd          | 2018-03-06 13:05:34 |   1 |   1 | 8.068090 | 8.068090 |
+| standforouranthem | 2017-09-25 13:02:27 |   1 |   1 | 6.969477 | 6.969477 |
+| karen             | 2017-06-21 02:21:36 |   1 |   1 | 6.122179 | 6.122179 |
+
+Criando um dicionário relacionado a um tema. Ex:
+
+``` r
+economic_dictionary <- c("economy", "unemployment", "trade", "tariffs")
+
+economic_tweets <- trumptweets |> 
+  dplyr::filter(stringr::str_detect(string = text, pattern =  economic_dictionary))
+
+head(economic_tweets$text, 2)
+#> [1] "Great talk with my friend President Mauricio Macri of Argentina this week. He is doing such a good job for Argentina. I support his vision for transforming his country’s economy and unleashing its potential!"                                                         
+#> [2] "The Washington Post and CNN have typically written false stories about our trade negotiations with China. Nothing has happened with ZTE except as it pertains to the larger trade deal. Our country has been losing hundreds of billions of dollars a year with China..."
+```
+
+-   Análise de sentimento: porcentagem de palavras negativas e
+    positivas.
+
+``` r
+head(tidytext::get_sentiments(lexicon = "bing"))
+#> # A tibble: 6 x 2
+#>   word       sentiment
+#>   <chr>      <chr>    
+#> 1 2-faces    negative 
+#> 2 abnormal   negative 
+#> 3 abolish    negative 
+#> 4 abominable negative 
+#> 5 abominably negative 
+#> 6 abominate  negative
+```
+
+``` r
+trump_tweet_sentiment <- tidy_trump_tweets_filtered |> 
+  dplyr::inner_join(tidytext::get_sentiments(lexicon = "bing")) |> 
+  dplyr::count(created_at, sentiment)
+#> Joining, by = "word"
+
+head(trump_tweet_sentiment)
+#> # A tibble: 6 x 3
+#>   created_at          sentiment     n
+#>   <dttm>              <chr>     <int>
+#> 1 2017-02-05 22:49:42 positive      1
+#> 2 2017-02-06 03:36:54 positive      4
+#> 3 2017-02-06 12:01:53 negative      2
+#> 4 2017-02-06 12:07:55 negative      2
+#> 5 2017-02-06 16:32:24 negative      3
+#> 6 2017-02-06 23:33:52 positive      2
+```
+
+``` r
+trump_tweet_sentiment |> 
+  dplyr::mutate(date = lubridate::floor_date(created_at, "day"))   |> 
+  dplyr::filter(sentiment == "negative") |> 
+  dplyr::count(date, sentiment) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_line(ggplot2::aes(x = date, y = n), color = "red", size = 0.5) +
+  ggplot2::theme_minimal() + 
+  ggplot2::labs(x = "Data", y = "Número de palavras negativas", title = "Sentimentos negativos nos tweets do Trump") +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, size = 18))
+```
+
+<img src="README_files/figure-gfm/unnamed-chunk-18-1.png" style="display: block; margin: auto;" />
+
+-   Quem decide o que é uma palavra negativa ou positiva? Quem criou o
+    dicionário!
+
+-   Coisas como sarcasmo, ironia: são difíceis de detectar nesse tipo de
+    análise.
+
+-   Quando escolher um dicionário, escolher algo que tenha entendimentos
+    similares ao meu. Diferentes dicionários tem melhores performances
+    em diferentes contextos.
+
+-   B: Em português, conheço esse pacote de análise de sentimentos:
+
+``` r
+# devtools::install_github("sillasgonzaga/lexiconPT")
+library(lexiconPT)
+# carregando os dicionários
+data("sentiLex_lem_PT02")
+data("oplexicon_v2.1")
+data("oplexicon_v3.0")
+
+lexiconPT::get_word_sentiment("temer")
+#> $oplexicon_v2.1
+#>        term type polarity
+#> 28711 temer   vb        1
+#> 
+#> $oplexicon_v3.0
+#>        term type polarity polarity_revision
+#> 30160 temer   vb        1                 A
+#> 
+#> $sentilex
+#>       term grammar_category polarity polarity_target polarity_classification
+#> 6546 temer                V       -1           N0:N1                     MAN
+
+lexiconPT::get_word_sentiment("bolsonaro")
+#> $oplexicon_v2.1
+#> [1] "Word not present in dataset"
+#> 
+#> $oplexicon_v3.0
+#> [1] "Word not present in dataset"
+#> 
+#> $sentilex
+#> [1] "Word not present in dataset"
+```
+
+-   Linguistic inquiry word count (LIWC) - é popular, mas imperfeito.
+
+-   Quando usar dictionary-based analises? depende! Se sabemos
+    concretamente o que vamos procurar nos dados, e temos uma lista de
+    palavras, pode ser uma boa idea. Se não, podemos usar os métodos não
+    supervisionados. Também é possível fazer com métodos híbridos :)
+
 ### Topic Models
 
 ### Text Networks
+
+``` r
+sessioninfo::session_info()$platform
+#>  setting  value                                 
+#>  version  R version 4.1.0 RC (2021-05-17 r80314)
+#>  os       macOS Big Sur 11.2.3                  
+#>  system   aarch64, darwin20                     
+#>  ui       X11                                   
+#>  language (EN)                                  
+#>  collate  en_US.UTF-8                           
+#>  ctype    en_US.UTF-8                           
+#>  tz       America/Sao_Paulo                     
+#>  date     2021-05-19
+```

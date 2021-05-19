@@ -115,7 +115,7 @@ trumptweets$text[1]
 
 - Criar um "corpus style document": preservar o conteúdo e os metadados.
 
-```{r}
+```{r eval=FALSE, include=TRUE}
 # install.packages("tm")
 
 trump_corpus <- tm::Corpus(tm::VectorSource(as.vector(trumptweets$text)))
@@ -149,7 +149,8 @@ tidy_trump_tweets %>%
 ```{r}
 tidy_trump_tweets_without_stop_words <- 
   tidy_trump_tweets %>% 
-  dplyr::anti_join(tidytext::stop_words)
+  dplyr::anti_join(tidytext::stop_words) %>% 
+  dplyr::filter(!word %in% c("https", "rt", "t.co", "amp"))
 
 tidy_trump_tweets_without_stop_words  %>% 
   dplyr::count(word, sort = TRUE)
@@ -159,10 +160,11 @@ tidy_trump_tweets_without_stop_words  %>%
 - Limpar o texto: ele mostrou com R Base, estou fazendo com tidyverse
 ```{r}
 tidy_trump_tweets_filtered <-
-  tidy_trump_tweets_without_stop_words %>%
+  tidy_trump_tweets_without_stop_words %>% 
   dplyr::mutate(
     # remover números
-    word = tm::removeNumbers(word),
+    # word = tm::removeNumbers(word), # nao esta funcionando no 4.1.0
+    word =  gsub("\\d+", "", word),
     
     # substituir vírgula e ponto por nada
     word = stringr::str_replace_all(word, ",|\\.", ""),
@@ -193,7 +195,7 @@ tidy_trump_tweets_stem  %>%
 - Matriz: document-term matrix
 
 
-```{r}
+```{r eval=FALSE, include=TRUE}
 tidy_trump_tweets_stem %>% 
   dplyr::count(created_at, word) %>% 
   tidytext::cast_dtm(created_at, word, n)
@@ -205,8 +207,121 @@ tidy_trump_tweets_stem %>%
 
 ### Dictionary-Based Text Analysis
 
+- Formas sofisticadas de contagem de palavras, associadas com algum lexicon (ou grupo de palavras) que contém algum tipo de significado.
+
+```{r}
+top_words <- tidy_trump_tweets_filtered %>% 
+    dplyr::count(word, sort = TRUE)
+
+
+top_words |>
+  dplyr::slice(1:20) |>
+  dplyr::mutate(word = forcats::fct_reorder(word, n)) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_col(ggplot2::aes(
+    x = word,
+    y = n,
+    fill = word
+  )) +
+  ggplot2::scale_fill_viridis_d(direction = -1) +
+  ggplot2::coord_flip() +
+  ggplot2::theme_minimal() +
+  ggplot2::guides(fill = FALSE) +
+  ggplot2::labs(y = "Frequência", x = "Palavras", title = "Palavras mais frequentes nos tweets do Trump") +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, size = 18))
+```
+
+
+- Term frequency inverse document frequency (tf-idf) (isso não tá claro pra mim ainda)
+  - Inverse document frequency (IDF): Give more weight to a term occurring in less documents. 
+  - Função `bind_ft_idf()`
+
+
+```{r}
+trump_tf_idf <- tidy_trump_tweets_filtered |> 
+  dplyr::count(word, created_at) |>
+  tidytext::bind_tf_idf(word, created_at, n) |>
+  dplyr::arrange(desc(tf_idf))
+
+trump_tf_idf |> head(10) |> knitr::kable()
+```
+
+
+Criando um dicionário relacionado a um tema. Ex:
+
+```{r}
+economic_dictionary <- c("economy", "unemployment", "trade", "tariffs")
+
+economic_tweets <- trumptweets |> 
+  dplyr::filter(stringr::str_detect(string = text, pattern =  economic_dictionary))
+
+head(economic_tweets$text, 2)
+```
+- Análise de sentimento: porcentagem de palavras negativas e positivas.
+
+
+```{r}
+head(tidytext::get_sentiments(lexicon = "bing"))
+```
+```{r}
+trump_tweet_sentiment <- tidy_trump_tweets_filtered |> 
+  dplyr::inner_join(tidytext::get_sentiments(lexicon = "bing")) |> 
+  dplyr::count(created_at, sentiment)
+
+head(trump_tweet_sentiment)
+```
+
+
+```{r}
+trump_tweet_sentiment |> 
+  dplyr::mutate(date = lubridate::floor_date(created_at, "day"))   |> 
+  dplyr::filter(sentiment == "negative") |> 
+  dplyr::count(date, sentiment) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_line(ggplot2::aes(x = date, y = n), color = "red", size = 0.5) +
+  ggplot2::theme_minimal() + 
+  ggplot2::labs(x = "Data", y = "Número de palavras negativas", title = "Sentimentos negativos nos tweets do Trump") +
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, size = 18))
+```
+
+  - Quem decide o que é uma palavra negativa ou positiva? Quem criou o dicionário!
+
+  - Coisas como sarcasmo, ironia: são difíceis de detectar nesse tipo de análise. 
+  
+  - Quando escolher um dicionário, escolher algo que tenha entendimentos similares ao meu. Diferentes dicionários tem melhores performances em diferentes contextos.
+  
+  
+- B: Em português, conheço esse pacote de análise de sentimentos:
+
+```{r}
+# devtools::install_github("sillasgonzaga/lexiconPT")
+library(lexiconPT)
+# carregando os dicionários
+data("sentiLex_lem_PT02")
+data("oplexicon_v2.1")
+data("oplexicon_v3.0")
+
+lexiconPT::get_word_sentiment("temer")
+
+lexiconPT::get_word_sentiment("bolsonaro")
+```
+
+  
+- Linguistic inquiry word count (LIWC) - é popular, mas imperfeito.
+
+- Quando usar dictionary-based analises? depende! Se sabemos concretamente o que vamos procurar nos dados, e temos uma lista de palavras, pode ser uma boa idea. Se não, podemos usar os métodos não supervisionados. Também é possível fazer com métodos híbridos :)
+
+
 
 ### Topic Models
 
 
 ### Text Networks
+
+
+
+
+```{r}
+sessioninfo::session_info()$platform
+```
+
