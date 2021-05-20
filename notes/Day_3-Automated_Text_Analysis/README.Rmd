@@ -114,7 +114,7 @@ trumptweets$text[1]
 
 - Criar um "corpus style document": preservar o conteúdo e os metadados.
 
-```{r eval=FALSE, include=TRUE}
+```{r}
 # install.packages("tm")
 
 trump_corpus <- tm::Corpus(tm::VectorSource(as.vector(trumptweets$text)))
@@ -162,8 +162,8 @@ tidy_trump_tweets_filtered <-
   tidy_trump_tweets_without_stop_words %>% 
   dplyr::mutate(
     # remover números
-    # word = tm::removeNumbers(word), # nao esta funcionando no 4.1.0
-    word =  gsub("\\d+", "", word),
+    word = tm::removeNumbers(word), 
+    # word =  gsub("\\d+", "", word), #opcao sem tm
     
     # substituir vírgula e ponto por nada
     word = stringr::str_replace_all(word, ",|\\.", ""),
@@ -194,7 +194,7 @@ tidy_trump_tweets_stem  %>%
 - Matriz: document-term matrix
 
 
-```{r eval=FALSE, include=TRUE}
+```{r }
 tidy_trump_tweets_stem %>% 
   dplyr::count(created_at, word) %>% 
   tidytext::cast_dtm(created_at, word, n)
@@ -211,6 +211,11 @@ tidy_trump_tweets_stem %>%
 ```{r}
 top_words <- tidy_trump_tweets_filtered %>% 
     dplyr::count(word, sort = TRUE)
+
+
+# EDIT: MOMENTO EM QUE INSTALEI O R 4.1.0!
+# a partir deste ponto pode ser que o pipe nativo seja usado.
+
 
 
 top_words |>
@@ -314,13 +319,138 @@ lexiconPT::get_word_sentiment("bolsonaro")
 
 ### Topic Models
 
+- Técnicas para identificar temas latentes em um corpus (grupo de arquivos de texto que estamos usando).
+
+  - Leituras amplificadas!
+
+  - A técnica não diz para nós quantos tópicos estão presentes no corpus, nós precisamos informar isso para a técnica. 
+
+  - O resultado da técnica é: 1) uma lista de cada palavra associada a um tópico, e 2) relação de cada documento para cada tópico.
+
+  - Document-term matrix: representação de um corpus em formato de matriz, as linhas representam documentos, e as colunas são qualquer palavra  que aparece no corpus. As células da matrix contam quantas vezes cada palavra aparece em cada documento.
+
+
+```{r}
+library(topicmodels)
+library(tm)
+data("AssociatedPress")
+tm::inspect(AssociatedPress[1:5,1:5])
+
+dim(AssociatedPress)[1] # número de linhas (neste caso, representam documentos)
+dim(AssociatedPress)[2] # número de colunas (neste caso, representam palavras)
+```
+  - A primeira vez que realizamos o topic model, costuma estar errado. Vamos testar com 10 tópicos! Depois podemos repetir e testar. Nada substitui a validação feita por seres humanos.
+
+```{r, cache=TRUE}
+ap_topic_model <- topicmodels::LDA(AssociatedPress, # mariz que usaremos
+                                   k = 10, # numero de topicos  
+                                   control = list(seed = 321) # isso é importante para que a análise seja reprodutível 
+                                   # (obtenha o mesmo resultado cada vez que executar a função)
+                                    )
+```
+
+
+```{r}
+ap_topis <- tidytext::tidy(ap_topic_model, matrix = "beta")
+
+ap_top_terms <- ap_topis |> 
+  dplyr::group_by(topic) |> 
+  dplyr::top_n(10, beta) |> 
+  dplyr::ungroup() |> 
+  dplyr::arrange(topic, -beta)
+
+ap_top_terms |> 
+  dplyr::mutate(term = forcats::fct_reorder(term, beta),
+                topic = paste("Topic #", topic)) |> 
+  ggplot2::ggplot() +
+  ggplot2::geom_col(ggplot2::aes(x = term, y = beta, fill = factor(topic)), show.legend = FALSE) + 
+  ggplot2::facet_wrap(~ topic, scales = "free") + 
+  ggplot2::theme_minimal() + 
+  ggplot2::coord_flip() +
+  ggplot2::labs(title = "Topic Model of AP News Articles",
+                caption = "Top terms by topic (betas)",
+                y = "Betas", x = "Term")+
+  ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5, size = 18),
+                 axis.text.x =  ggplot2::element_text(size = 6),
+                 axis.text.y =  ggplot2::element_text(size = 6))
+  
+
+```
+
+  - O que pode ser um tópico?? Depende em como definimos as coisas. 
+
+  - Resistir à denteção de deixar a técnica fazer tudo. 
+
+
+- Structural topic modeling: similar ao LDA, mas explora metadados de um arquivo para melhorar a classificação de tópicos em um corpus. Ajuda a entender melhor o resultado.
+
+```{r}
+google_doc_id <- "1LcX-JnpGB0lU1iDnXnxB6WFqBywUKpew" # google file ID
+poliblogs <-
+  read.csv(
+    sprintf(
+      "https://docs.google.com/uc?id=%s&export=download",
+      google_doc_id 
+    ),
+    stringsAsFactors = FALSE
+  )
+
+head(poliblogs)
+```
+
+```{r}
+# estou com problema com esse pacote no R 4.1.0
+# library(stm)
+# processed <- stm::textProcessor(poliblogs$documents, metadata = poliblogs)
+# out <-  stm::prepDocuments(processed$documents, processed$vocab, processed$meta)
+# docs <- out$documents
+# vocab <- out$vocab
+# meta <-out$meta
+
+# First_STM <- stm::stm(documents = out$documents, vocab = out$vocab,
+#               K = 10, prevalence =~ rating + s(day) ,
+#               max.em.its = 75, data = out$meta,
+#               init.type = "Spectral", verbose = FALSE)
+
+# plot(First_STM)
+
+# stm::findThoughts(First_STM, texts = poliblogs$documents,
+#      n = 2, topics = 3)
+
+# findingk <- stm::searchK(out$documents, out$vocab, K = c(10:30),
+#  prevalence =~ rating + s(day), data = meta, verbose=FALSE)
+
+# plot(findingk)
+```
+
+- Trabalhando com metadados: não é porque temos algum metadado, que significa que ele deva ser incluido na stm.
+
+```{r}
+# predict_topics<-estimateEffect(formula = 1:10 ~ rating + s(day), stmobj = First_STM, metadata = out$meta, uncertainty = "Global")
+# 
+# plot(predict_topics, covariate = "rating", topics = c(3, 5, 9),
+#  model = First_STM, method = "difference",
+#  cov.value1 = "Liberal", cov.value2 = "Conservative",
+#  xlab = "More Conservative ... More Liberal",
+#  main = "Effect of Liberal vs. Conservative",
+#  xlim = c(-.1, .1), labeltype = "custom",
+#  custom.labels = c('Topic 3', 'Topic 5','Topic 9'))
+```
+
+- LDAviz - possibilida criar visualizações interessantes
+
+
+- Topic models para textos pequenos (como tweets). O LDA não funciona bem com tweets. Tem outra técnica que tem sido usada: stLDA-C, presume que cada tweet só pode conter um tópico.
+
+- Estar ciente das limitações, em alguns casos a análise dictionary based seria o suficiente.
 
 ### Text Networks
 
 
 
+## Informações da sessão
 
 ```{r}
-sessioninfo::session_info()$platform
+sessioninfo::session_info()
 ```
 
