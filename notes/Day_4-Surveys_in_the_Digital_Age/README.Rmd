@@ -1,0 +1,42 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  dpi = 300,
+  fig.align = "center"
+)
+```
+
+# Day 4: Surveys in the Digital Age
+
+## Pre-arrival 
+
+- Materiais disponíveis em: https://sicss.io/curriculum
+
+## Survey Research in the Digital Age
+...
+
+
+## Probability and Non-Probability Sampling
+...
+
+## Computer-Administered Interviews
+...
+
+## Combining Surveys and Big Data
+...
+
+## Additions and Extension
+
+## Informações da sessão
+
+```{r}
+sessioninfo::session_info()
+```
+
