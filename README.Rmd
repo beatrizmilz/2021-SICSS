@@ -25,9 +25,9 @@ Anotações sobre o [2021 Summer Institute in Computational Social Science](http
 
 - [X] [Day 2: Collecting Digital Trace Data](notes/Day_2-Collecting_Digital_Trace_Data/README.md)
 
-- [ ] [Day 3: Automated Text Analysis](notes/Day_3-Automated_Text_Analysis/README.md)
+- [x] [Day 3: Automated Text Analysis](notes/Day_3-Automated_Text_Analysis/README.md)
 
-- [ ] Day 4: Surveys in the Digital Age
+- [ ] [Day 4: Surveys in the Digital Age](notes/Day_4-Surveys_in_the_Digital_Age/README.md)
 
 - [ ] Day 5: Mass Collaboration
 

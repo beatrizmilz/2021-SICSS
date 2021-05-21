@@ -17,16 +17,12 @@ Science](https://sicss.io/2021/fgv-dapp-brazil/).
 -   [x] [Day 2: Collecting Digital Trace
     Data](notes/Day_2-Collecting_Digital_Trace_Data/README.md)
 
--   [ ] [Day 3: Automated Text
+-   [x] [Day 3: Automated Text
     Analysis](notes/Day_3-Automated_Text_Analysis/README.md)
 
--   [ ] Day 4: Surveys in the Digital Age
+-   [ ] [Day 4: Surveys in the Digital
+    Age](notes/Day_4-Surveys_in_the_Digital_Age/README.md)
 
 -   [ ] Day 5: Mass Collaboration
 
 -   [ ] Day 6: Experiments
-
-
-## Conteúdos complementares
-
-- [ ] [Course Data Science & Society - Duke University, Spring 2021](https://dssoc.github.io/schedule/) 
