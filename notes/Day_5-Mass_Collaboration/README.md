@@ -1,29 +1,29 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Day 4: Surveys in the Digital Age
+# Day 5: Mass Collaboration
 
 ## Pre-arrival
 
 -   Materiais disponíveis em: <https://sicss.io/curriculum>
 
-## Survey Research in the Digital Age
+## Introduction to Mass Collaboration
 
 …
 
-## Probability and Non-Probability Sampling
+## Human Computation
 
 …
 
-## Computer-Administered Interviews
+## Open Call
 
 …
 
-## Combining Surveys and Big Data
+## Distributed Data Collection
 
 …
 
-## Additions and Extension
+## Fragile Families Challenge
 
 …
 

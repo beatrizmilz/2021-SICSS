@@ -1,29 +1,29 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Day 4: Surveys in the Digital Age
+# Day 6: Experiments
 
 ## Pre-arrival
 
 -   Materiais disponíveis em: <https://sicss.io/curriculum>
 
-## Survey Research in the Digital Age
+## What, Why, and Which Experiments?
 
 …
 
-## Probability and Non-Probability Sampling
+## Moving Beyond Simple Experiments
 
 …
 
-## Computer-Administered Interviews
+## Four Strategies for Making Experiments Happen
 
 …
 
-## Combining Surveys and Big Data
+## Zero Variable Cost Data and Musiclab
 
 …
 
-## Additions and Extension
+## 3Rs
 
 …
 

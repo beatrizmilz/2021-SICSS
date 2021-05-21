@@ -23,6 +23,7 @@ Science](https://sicss.io/2021/fgv-dapp-brazil/).
 -   [ ] [Day 4: Surveys in the Digital
     Age](notes/Day_4-Surveys_in_the_Digital_Age/README.md)
 
--   [ ] Day 5: Mass Collaboration
+-   [ ] [Day 5: Mass
+    Collaboration](notes/Day_5-Mass_Collaboration/README.md)
 
--   [ ] Day 6: Experiments
+-   [ ] [Day 6: Experiments](notes/Day_6-Experiments/README.md)
