@@ -315,7 +315,7 @@ lexiconPT::get_word_sentiment("bolsonaro")
 
 - Quando usar dictionary-based analises? depende! Se sabemos concretamente o que vamos procurar nos dados, e temos uma lista de palavras, pode ser uma boa idea. Se não, podemos usar os métodos não supervisionados. Também é possível fazer com métodos híbridos :)
 
-
+EDIT: Fernando Correa comentou desse pacote: [spacyr](https://cran.r-project.org/web/packages/spacyr/vignettes/using_spacyr.html). Julio Trecenti comentou sobre o [BERT](https://github.com/neuralmind-ai/portuguese-bert) (em Python).
 
 ### Topic Models
 
@@ -446,6 +446,40 @@ head(poliblogs)
 
 ### Text Networks
 
+- O que é uma rede? É formado por nodes, e tem edges que são as conexões entre eles.
+
+- Redes de textos: tem mais de uma forma de pensar o que são os nodes. Exemplos: nodes sendo pessoas; ou nodes sendo palavras.
+
+```{r}
+# devtools::install_github("cbail/textnets")
+library(textnets)
+data(sotu)
+head(sotu)
+
+sotu_first_speeches <- sotu %>%
+  dplyr::group_by(president) %>%
+  dplyr::slice(1)
+
+prepped_sotu <- textnets::PrepText(
+  sotu_first_speeches,
+  groupvar = "president",
+  textvar = "sotu_text",
+  node_type = "groups",
+  tokenizer = "words",
+  pos = "nouns",
+  remove_stop_words = TRUE,
+  compound_nouns = TRUE
+)
+
+sotu_text_network <- textnets::CreateTextnet(prepped_sotu)
+
+textnets::VisTextNet(sotu_text_network,
+                     alpha = .1,
+                     label_degree_cut = 3)
+
+
+
+```
 
 
 ## Informações da sessão
