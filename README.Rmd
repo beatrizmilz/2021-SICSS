@@ -32,3 +32,38 @@ Anotações sobre o [2021 Summer Institute in Computational Social Science](http
 - [ ] [Day 5: Mass Collaboration](notes/Day_5-Mass_Collaboration/README.md)
 
 - [ ] [Day 6: Experiments](notes/Day_6-Experiments/README.md)
+
+## Leitura do livro *bit by bit*
+
+```{r echo=FALSE, results='asis'}
+library(magrittr, include.only = "%>%")
+url <- "https://www.bitbybitbook.com/en/1st-ed/preface/"
+
+links <- rvest::read_html(url) %>% 
+  rvest::html_node(xpath = '//*[@id="wrapper"]/nav/div[3]/ul') %>% 
+  rvest::html_nodes("a") %>% 
+  rvest::html_attr('href') 
+
+lido <- rep(TRUE, 6)
+
+falta_ler <- rep(FALSE, length(links) - length(lido))
+
+leitura <- c(lido, falta_ler)
+
+links %>%
+  tibble::as_tibble() %>%
+  dplyr::mutate(
+    nome = stringr::str_remove_all(value, "/en/1st-ed/|/$"),
+    link = paste0("https://www.bitbybitbook.com", value),
+    md = glue::glue("[{nome}]({link})"),
+    assistido = leitura,
+    md = dplyr::case_when(
+      assistido == TRUE ~ glue::glue("- [x] {md}"),
+      assistido == FALSE ~ glue::glue("- [ ] {md}")
+    )
+  ) %>%
+  dplyr::pull(md)
+
+
+```
+
