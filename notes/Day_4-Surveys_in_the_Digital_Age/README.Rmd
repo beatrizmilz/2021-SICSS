@@ -117,7 +117,17 @@ knitr::opts_chunk$set(
 
 ## Additions and Extension
 
-...
+1. Wiki surveys. princípios gerais: greedy, collaborative (construído de forma conjunta), adaptive (usar informações que obtemos para tornar a coleta de dados mais eficiente). É uma nova forma de interagir com respondentes, e não uma forma de amostragem.
+
+- https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0123483
+
+- https://www.allourideas.org/
+
+2. Amplified asking -> deep learning
+
+- https://github.com/nealjean/predicting-poverty
+
+- http://sustain.stanford.edu/predicting-poverty
 
 ## Informações da sessão
 
