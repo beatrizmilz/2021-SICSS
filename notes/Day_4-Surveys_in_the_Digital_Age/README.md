@@ -9,7 +9,61 @@
 
 ## Survey Research in the Digital Age
 
-…
+-   Vamos falar em custom made data. Mas é legal ter em mente que alguns
+    dos trabalhos mais legais são feitos unindo custom-made e ready-made
+    data.
+
+-   Baseado no livro bit by bit.
+
+-   Precisamos de surveys mesmo na digital age: especialmente! Tem
+    propriedades complementares. Pq?
+
+    -   Limitações de grandes bases de dados: não foi produzida por nós,
+        não foi pensada por nós, não é para nós! O tipo de informação
+        coletada nem sempre é o que precisamos.
+
+    -   internal states vs external states: é dificil inferir os
+        internal states a partir dos external states.
+
+        -   internal states: questões como conhecimento, expectativas
+            para o futuro, etc. geralmente é algo que queremos entender,
+            ou que ajuda a entender external states.
+        -   external states: questões de comportamento, como quantas
+            vezes vamos ao médico no último mês, quantos copos de café
+            tomou hoje, etc.
+
+    -   Inacessibilidade de grandes bases de dados (principalmente sendo
+        pessoas pesquisadoras). Muitas bases de dados que poderiam ser
+        úteis são propriedade de alguma organização, e não temos acesso.
+
+-   Como iremos perguntar coisas nas surveys é o que provavelmente vai
+    mudar!
+
+-   Mudanças na tecnologia mudam a forma que coletamos os dados. 3 eras
+    dos surveys:
+
+    -   1 era: estratégia de amostragem -&gt; area probability;
+        entrevistas -&gt; presenciais/cara-a-cara
+
+    -   2 era: estratégia de amostragem -&gt; random digital dial
+        probability; entrevistas -&gt; telefone. Quando essa mudança
+        aconteceu, houve pesquisadores que contestaram essa forma de
+        coleta de dados! Mas essa tecnologia possibilitou diminuir os
+        cus tos e tempo de pesquisa.
+
+    -   3 era: estratégia de amostragem -&gt; amostragem não
+        probabilística; entrevistas -&gt; administrada por computadores.
+        Acha que cada vez mais teremos surveys que são linkadas com
+        bases de big data.
+
+-   Total survey error framework: presentes nas primeiras duas eras e
+    que é importante para a terceira.
+
+    -   Resumo: um framework pra ajudar a pensar em todas as coisas que
+        podem dar errado em um survey!
+    -   Ajuda as pessoas pesquisadoras a organizar a survey, pensando os
+        erros que podem acontecer, equilibrar o trade-off: menor
+        possibilidade de erro possível para um budget disponível.
 
 ## Probability and Non-Probability Sampling
 
@@ -41,7 +95,7 @@ sessioninfo::session_info()
 #>  collate  en_US.UTF-8                                
 #>  ctype    en_US.UTF-8                                
 #>  tz       America/Sao_Paulo                          
-#>  date     2021-05-21                                 
+#>  date     2021-05-24                                 
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  ! package     * version date       lib source                            
@@ -61,7 +115,7 @@ sessioninfo::session_info()
 #>  P yaml          2.2.1   2020-02-01 [?] CRAN (R 4.1.0)                    
 #> 
 #> [1] /Users/beatrizmilz/GitHub/Pesquisa/2021-SICSS/renv/library/R-4.1/aarch64-apple-darwin20
-#> [2] /private/var/folders/z5/nh0wlcsj2fq99rjrj1x7hcwc0000gn/T/RtmpHylj25/renv-system-library
+#> [2] /private/var/folders/z5/nh0wlcsj2fq99rjrj1x7hcwc0000gn/T/RtmpedKqUw/renv-system-library
 #> [3] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
 #> 
 #>  P ── Loaded and on-disk path mismatch.
