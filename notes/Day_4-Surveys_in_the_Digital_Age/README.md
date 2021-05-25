@@ -159,7 +159,29 @@
 
 ## Combining Surveys and Big Data
 
-…
+-   Esse video vai focar na 3 era do survey.
+
+-   Big data não é subtituto de survey, o melhor é pensar que podem ser
+    pensado como complementares.
+
+-   2 approaches:
+
+    -   Enriched asking: record linkage between big data and survey
+        data, e esse join é usado na pesquisa. Ex de leitura:
+        [Ansolabehere and Hersh,
+        2012](https://www.cambridge.org/core/journals/political-analysis/article/validation-what-big-data-reveal-about-survey-misreporting-and-the-real-electorate/8EAEC7B63CD44AED85075AB4FF5BE4F0).
+
+    -   Ampliflied asking: Temos dados de survey para x pessoas (survey
+        data), e temos uma base de big data para x + y pessoas (big data
+        source). Usar isso para estimar o modelo e predict a possível
+        resposta de survey das pessoas y (imputed survey data).
+        Amplifica os dados de survey, e o que usa na pesquisa é os dados
+        de survey (originais e imputados). Ex de leitura: [Predicting
+        poverty and wealth from mobile phone
+        metadata](https://science.sciencemag.org/content/350/6264/1073/tab-pdf).
+        É difícil saber se os resultados estão corretos, mas é mais
+        rápido e mais barato de fazer este tipo de pesquisa do que fazer
+        o survey para as pessoas x + y.
 
 ## Additions and Extension
 
