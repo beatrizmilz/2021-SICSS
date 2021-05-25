@@ -64,6 +64,24 @@
     -   Ajuda as pessoas pesquisadoras a organizar a survey, pensando os
         erros que podem acontecer, equilibrar o trade-off: menor
         possibilidade de erro possível para um budget disponível.
+    -   Insight 1: erros podem vir de bias ou variância (tem uma
+        ilustração interessante).
+    -   Insight 2: erros podem vir de erros de medição (como conseguimos
+        aprender com as pessoas que estamos entrevistando) ou erros de
+        representação (falamos com uma amostra de pessoas, e queremos
+        fazer uma inferência sobre a população).
+        -   Exemplo sobre o trump e a eleição: se o que queremos estimar
+            está mudando, surveys não vão conseguir obter bons
+            resultados. Nesse exemplo, teve muito mais respostas de
+            pessoas que tinham ensino superior, mas isso não foi
+            ajustado bem posteriormente, o que influenciou no resultado
+            (problema de representação). Além disso, algumas pessoas que
+            votam no trump não revelaram isso na pesquisa (problema de
+            medição).
+    -   o TSEF ajuda também a pensar como a digital age pode criar novas
+        oportunidades (a quem perguntar, como perguntar)
+    -   Sugestão de leitura sobre TSEF: [Groves *et al.*,
+        2009](https://www.wiley.com/en-us/Survey+Methodology%2C+2nd+Edition-p-9780470465462)
 
 ## Probability and Non-Probability Sampling
 
@@ -95,7 +113,7 @@ sessioninfo::session_info()
 #>  collate  en_US.UTF-8                                
 #>  ctype    en_US.UTF-8                                
 #>  tz       America/Sao_Paulo                          
-#>  date     2021-05-24                                 
+#>  date     2021-05-25                                 
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  ! package     * version date       lib source                            
