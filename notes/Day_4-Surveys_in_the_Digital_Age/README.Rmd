@@ -92,7 +92,16 @@ knitr::opts_chunk$set(
 
 
 ## Computer-Administered Interviews
-...
+
+- Esse video vai focar na 3 era do survey.
+
+- Antigamente, as surveys eram administradas por humanos: pessoalmente ou telefone.
+
+- Estamos migrando para surveys administradas por computadores: possibilita mudanças, pensar quais são as mudanças necessárias.
+
+- Schober et al 2015: resultados: os dados coletados através de mensagem de texto resultou em dados de qualidade melhor.
+
+- We can and should take advantage of the tools of the digital age to ask in new ways
 
 ## Combining Surveys and Big Data
 ...
