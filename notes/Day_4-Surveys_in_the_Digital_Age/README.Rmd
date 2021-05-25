@@ -55,7 +55,41 @@ knitr::opts_chunk$set(
   - Sugestão de leitura sobre TSEF: [Groves *et al.*, 2009](https://www.wiley.com/en-us/Survey+Methodology%2C+2nd+Edition-p-9780470465462)
 
 ## Probability and Non-Probability Sampling
-...
+
+- Esse video vai focar na 3 era do survey.
+
+- Senso comum antigamente: amostragem não probabilística é ruim. Como ele vê agora:
+  - Amostragem probabilistica: unknown sampling process, weighting based of unverifiable assumptions
+  - Amostragem não-probabilística: unknown sampling process, weighting based of unverifiable assumptions
+  - Tem muitos níveis de non-response. Por isso, a questão de a. probabilistica X a. não-probabilistica é muito mais complicada.
+  
+- Probability sample (roughly): 
+  - every unit from a frame population has a known and non-zero probability of inclusion
+  - not all probability samples look like miniature versions of the population
+  - with appropriate weighting, probability samples can yield unbiased estimates of the frame population.
+  - how you collect your data impacts how you make inference
+  - focus on properties of estimators not properties samples
+  - na equação horivtz-thompson estimator, é preciso saber a probabilidade de que alguem seja incluído na pesquisa, porém é difícil saber (principalmente pensando na taxa de não-resposta).
+  
+- Inferência de amostragem probabilística
+  - na teoria: respondents + known information about sampling -> estimates
+  - na prática: respondents + estimated information about sampling (auxiliary information + assumptions) -> estimates
+
+- Inferência de amostragem não-probabilística 
+  - na prática: respondents + estimated information about sampling (auxiliary information + assumptions) -> estimates
+  
+- O que quer dizer? Não tem grandes diferenças entre a amostragem probabilística e não probabilística na prática.
+
+- Weighted estimate uses auxiliary information and assumptions (no meu caso: acho que é interessante pensar na composição % do comitê!)
+
+- No geral: amostragem probabilística na prática -> menos erros e mais custos; amostragem não-probabilística -> mais erros e menos custos.   Autor acha que os erros tendem a diminuir. 
+
+- Nem todas as pessoas estarão dispostas a participar da pesquisa, e precisamos pensar nisso e ajustar na hora de estimar. 
+
+- Sugestões de leitura: 
+  - Sampling: Design and Analysis - Lohr (2009)
+  - Model Assisted Survey Sampling - Sarndal *et al* (2013).
+
 
 ## Computer-Administered Interviews
 ...
