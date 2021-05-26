@@ -9,7 +9,34 @@
 
 ## Introduction to Mass Collaboration
 
-…
+-   O Wikipedia ilustra bem a ideia de Mass Collaboration.
+
+-   Pergunta: Quais são outros problemas intelectuais grandes que
+    poderíamos resolver se tivessemos novas formas de colaboração?
+
+-   Colaboração em massa combina ideias de:
+
+    -   Crowdsourcing
+    -   Citizen science
+    -   Collective Intelligence
+
+-   Grupos:
+
+    -   Human computation
+    -   Open call
+    -   Distributed data collection
+
+-   Ideia importante: pensar as pessoas como colaboradoras e não como
+    cogs (o que é cogs?)
+
+-   Mudar algumas ideias:
+
+-   ~~Isso é pesquisa?~~ -&gt; Isso possibilita fazer novas pesquisas?
+
+-   ~~Isso é perfeito?~~ -&gt; Isso é melhor do que conseguimos fazer
+    sem colaboração em massa?
+
+-   ~~Isso é impossível?~~ -&gt; Isso é possível?
 
 ## Human Computation
 
@@ -41,7 +68,7 @@ sessioninfo::session_info()
 #>  collate  en_US.UTF-8                                
 #>  ctype    en_US.UTF-8                                
 #>  tz       America/Sao_Paulo                          
-#>  date     2021-05-21                                 
+#>  date     2021-05-26                                 
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  ! package     * version date       lib source                            
@@ -61,7 +88,7 @@ sessioninfo::session_info()
 #>  P yaml          2.2.1   2020-02-01 [?] CRAN (R 4.1.0)                    
 #> 
 #> [1] /Users/beatrizmilz/GitHub/Pesquisa/2021-SICSS/renv/library/R-4.1/aarch64-apple-darwin20
-#> [2] /private/var/folders/z5/nh0wlcsj2fq99rjrj1x7hcwc0000gn/T/RtmpHylj25/renv-system-library
+#> [2] /private/var/folders/z5/nh0wlcsj2fq99rjrj1x7hcwc0000gn/T/RtmpckfsJS/renv-system-library
 #> [3] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
 #> 
 #>  P ── Loaded and on-disk path mismatch.

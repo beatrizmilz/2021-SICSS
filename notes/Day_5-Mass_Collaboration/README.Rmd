@@ -20,8 +20,28 @@ knitr::opts_chunk$set(
 - Materiais disponíveis em: https://sicss.io/curriculum
 
 ## Introduction to Mass Collaboration
-...
 
+- O Wikipedia ilustra bem a ideia de Mass Collaboration. 
+
+- Pergunta: Quais são outros problemas intelectuais grandes que poderíamos resolver se tivessemos novas formas de colaboração?
+
+- Colaboração em massa combina ideias de: 
+  - Crowdsourcing
+  - Citizen science
+  - Collective Intelligence
+  
+- Grupos:
+  - Human computation
+  - Open call
+  - Distributed data collection
+  
+- Ideia importante: pensar as pessoas como colaboradoras e não como cogs (o que é cogs?)
+
+- Mudar algumas ideias:
+ - ~~Isso é pesquisa?~~ -> Isso possibilita fazer novas pesquisas?
+ - ~~Isso é perfeito?~~ -> Isso é melhor do que conseguimos fazer sem colaboração em massa?
+ - ~~Isso é impossível?~~ -> Isso é possível?
+ 
 
 ## Human Computation
 ...

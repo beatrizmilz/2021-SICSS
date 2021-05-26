@@ -27,7 +27,7 @@ Anotações sobre o [2021 Summer Institute in Computational Social Science](http
 
 - [x] [Day 3: Automated Text Analysis](notes/Day_3-Automated_Text_Analysis/README.md)
 
-- [ ] [Day 4: Surveys in the Digital Age](notes/Day_4-Surveys_in_the_Digital_Age/README.md)
+- [x] [Day 4: Surveys in the Digital Age](notes/Day_4-Surveys_in_the_Digital_Age/README.md)
 
 - [ ] [Day 5: Mass Collaboration](notes/Day_5-Mass_Collaboration/README.md)
 

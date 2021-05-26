@@ -20,7 +20,7 @@ Science](https://sicss.io/2021/fgv-dapp-brazil/).
 -   [x] [Day 3: Automated Text
     Analysis](notes/Day_3-Automated_Text_Analysis/README.md)
 
--   [ ] [Day 4: Surveys in the Digital
+-   [x] [Day 4: Surveys in the Digital
     Age](notes/Day_4-Surveys_in_the_Digital_Age/README.md)
 
 -   [ ] [Day 5: Mass
