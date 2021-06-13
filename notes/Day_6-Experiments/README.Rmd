@@ -20,11 +20,37 @@ knitr::opts_chunk$set(
 - Materiais disponíveis em: https://sicss.io/curriculum
 
 ## What, Why, and Which Experiments?
-...
 
+- Importância dos grupos de controle
+
+- Em experimentos digitais, os custos não aumentam, mas é preciso pensar mais em questões éticas
+
+- randomized controlled experiments
 
 ## Moving Beyond Simple Experiments
-...
+
+- Optimization experiment vs Understanding experiments
+  - Understading: desenvolver o entendimento de algum tópico
+  - Optimization: otimizar uma métrica (ex. qual cor de botão faz as pessoas clicarem mais?)
+  - Uma forma de otimizar é entender melhor. E otimizar também aumenta o entendimento. 
+  - Vamos caminhar para fazer experimentos que não são vs, e sim + : Optimization + Understanding
+
+- Ir além dos experimentos simples:
+  - Validity
+  - Heterogeneity of treatment effects
+  - Mechanisms
+  
+- Validity: checklist de formas em que um experimento pode dar errado
+  - statistical conclusion validity: vc fez a estatística correta?
+  - internal validity: seu experimento fez o que vc esperava que fizesse? deveria ser mais fácil em experimentos digitais.
+  - construct validity: o que fizemos é uma boa operacionalização da "construção" que estamos pensando. 
+  - external validity: o experimento é provavel de encontrar resultados similares para outros grupos de pessoas ou outras formas de operacionalizar o construct. em experimentos digitais, é possível repetir o experimento várias vezes, e isso pode ajudar a avaliar a external validity.
+  
+  
+- Heterogeneity of treatment effects: experimentos digitais são bons nesse caso. Cuidado com o fishing (Tem formas para evitar fishing).
+
+  - Mechanisms: exemplo de frutas cítricas e escorbuto em pessoas em navios antigamente.
+
 
 ## Four Strategies for Making Experiments Happen
 ...

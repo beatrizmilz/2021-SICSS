@@ -117,7 +117,20 @@ Artigo citado:
 
 ## Fragile Families Challenge
 
-…
+-   Open call.
+
+-   Vieses dos dados -&gt; vieses nas predicoes.
+
+-   Machine learning não é magica
+
+-   é necessário avaliar os algoritmos de forma transparente
+
+-   modelos complexos não tem resultados melhores do que modelos simples
+
+-   Nosso entendimento é incompleto
+
+-   systematic longitudinal data collection -&gt; predictive modeling
+    -&gt; in-depth interviews
 
 ## Informações da sessão
 
@@ -133,7 +146,7 @@ sessioninfo::session_info()
 #>  collate  en_US.UTF-8                                
 #>  ctype    en_US.UTF-8                                
 #>  tz       America/Sao_Paulo                          
-#>  date     2021-06-01                                 
+#>  date     2021-06-11                                 
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  ! package     * version date       lib source                            
@@ -153,7 +166,7 @@ sessioninfo::session_info()
 #>  P yaml          2.2.1   2020-02-01 [?] CRAN (R 4.1.0)                    
 #> 
 #> [1] /Users/beatrizmilz/GitHub/Pesquisa/2021-SICSS/renv/library/R-4.1/aarch64-apple-darwin20
-#> [2] /private/var/folders/z5/nh0wlcsj2fq99rjrj1x7hcwc0000gn/T/Rtmp23pJw5/renv-system-library
+#> [2] /private/var/folders/z5/nh0wlcsj2fq99rjrj1x7hcwc0000gn/T/RtmpDdrMdP/renv-system-library
 #> [3] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
 #> 
 #>  P ── Loaded and on-disk path mismatch.

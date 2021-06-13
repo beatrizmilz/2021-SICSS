@@ -9,11 +9,49 @@
 
 ## What, Why, and Which Experiments?
 
-…
+-   Importância dos grupos de controle
+
+-   Em experimentos digitais, os custos não aumentam, mas é preciso
+    pensar mais em questões éticas
+
+-   randomized controlled experiments
 
 ## Moving Beyond Simple Experiments
 
-…
+-   Optimization experiment vs Understanding experiments
+
+    -   Understading: desenvolver o entendimento de algum tópico
+    -   Optimization: otimizar uma métrica (ex. qual cor de botão faz as
+        pessoas clicarem mais?)
+    -   Uma forma de otimizar é entender melhor. E otimizar também
+        aumenta o entendimento.
+    -   Vamos caminhar para fazer experimentos que não são vs, e sim + :
+        Optimization + Understanding
+
+-   Ir além dos experimentos simples:
+
+    -   Validity
+    -   Heterogeneity of treatment effects
+    -   Mechanisms
+
+-   Validity: checklist de formas em que um experimento pode dar errado
+
+    -   statistical conclusion validity: vc fez a estatística correta?
+    -   internal validity: seu experimento fez o que vc esperava que
+        fizesse? deveria ser mais fácil em experimentos digitais.
+    -   construct validity: o que fizemos é uma boa operacionalização da
+        “construção” que estamos pensando.
+    -   external validity: o experimento é provavel de encontrar
+        resultados similares para outros grupos de pessoas ou outras
+        formas de operacionalizar o construct. em experimentos digitais,
+        é possível repetir o experimento várias vezes, e isso pode
+        ajudar a avaliar a external validity.
+
+-   Heterogeneity of treatment effects: experimentos digitais são bons
+    nesse caso. Cuidado com o fishing (Tem formas para evitar fishing).
+
+    -   Mechanisms: exemplo de frutas cítricas e escorbuto em pessoas em
+        navios antigamente.
 
 ## Four Strategies for Making Experiments Happen
 
@@ -41,7 +79,7 @@ sessioninfo::session_info()
 #>  collate  en_US.UTF-8                                
 #>  ctype    en_US.UTF-8                                
 #>  tz       America/Sao_Paulo                          
-#>  date     2021-05-21                                 
+#>  date     2021-06-13                                 
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  ! package     * version date       lib source                            
@@ -61,7 +99,7 @@ sessioninfo::session_info()
 #>  P yaml          2.2.1   2020-02-01 [?] CRAN (R 4.1.0)                    
 #> 
 #> [1] /Users/beatrizmilz/GitHub/Pesquisa/2021-SICSS/renv/library/R-4.1/aarch64-apple-darwin20
-#> [2] /private/var/folders/z5/nh0wlcsj2fq99rjrj1x7hcwc0000gn/T/RtmpHylj25/renv-system-library
+#> [2] /private/var/folders/z5/nh0wlcsj2fq99rjrj1x7hcwc0000gn/T/RtmpDdrMdP/renv-system-library
 #> [3] /Library/Frameworks/R.framework/Versions/4.1-arm64/Resources/library
 #> 
 #>  P ── Loaded and on-disk path mismatch.

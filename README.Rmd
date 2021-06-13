@@ -29,13 +29,13 @@ Anotações sobre o [2021 Summer Institute in Computational Social Science](http
 
 - [x] [Day 4: Surveys in the Digital Age](notes/Day_4-Surveys_in_the_Digital_Age/README.md)
 
-- [ ] [Day 5: Mass Collaboration](notes/Day_5-Mass_Collaboration/README.md)
+- [x] [Day 5: Mass Collaboration](notes/Day_5-Mass_Collaboration/README.md)
 
 - [ ] [Day 6: Experiments](notes/Day_6-Experiments/README.md)
 
 ## Leitura do livro *bit by bit*
 
-```{r echo=FALSE, results='asis'}
+```{r eval=FALSE, include=FALSE, results='asis'}
 library(magrittr, include.only = "%>%")
 url <- "https://www.bitbybitbook.com/en/1st-ed/preface/"
 

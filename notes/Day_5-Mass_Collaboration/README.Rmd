@@ -96,7 +96,20 @@ Artigo citado: https://science.sciencemag.org/content/321/5895/1465/tab-pdf
 
 
 ## Fragile Families Challenge
-...
+
+- Open call.
+
+- Vieses dos dados -> vieses nas predicoes.
+
+- Machine learning não é magica
+
+- é necessário avaliar os algoritmos de forma transparente
+
+- modelos complexos não tem resultados melhores do que modelos simples
+
+- Nosso entendimento é incompleto
+
+- systematic  longitudinal data collection -> predictive modeling -> in-depth interviews
 
 ## Informações da sessão
 
