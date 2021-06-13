@@ -26,6 +26,4 @@ Science](https://sicss.io/2021/fgv-dapp-brazil/).
 -   [x] [Day 5: Mass
     Collaboration](notes/Day_5-Mass_Collaboration/README.md)
 
--   [ ] [Day 6: Experiments](notes/Day_6-Experiments/README.md)
-
-## Leitura do livro *bit by bit*
+-   [x] [Day 6: Experiments](notes/Day_6-Experiments/README.md)

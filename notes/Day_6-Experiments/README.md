@@ -55,15 +55,83 @@
 
 ## Four Strategies for Making Experiments Happen
 
-…
+-   Custo: dinheiro, tempo
+
+-   Controle: o quanto é possível controlar o ambiente onde está
+    acontecendo o experimento
+
+-   Realismo: ambiente parecido ou não com o mundo real
+
+-   Ética: o quanto podemos ter complexidade em termos éticos
+
+-   Tipos de estratégias!
+
+-   Partner with the powerful: fazer parceria com empresas, governos,
+    etc
+
+    -   Cost: low
+    -   Control: medium
+    -   Realism: high
+    -   Ethics: potentially complex
+
+-   Just do it yourself: use existing systems
+
+    -   Cost: low
+    -   Control: low
+    -   Realism: high
+    -   Ethics: potentially complex
+
+-   Just do it yourself: build an experiment
+
+    -   Cost: medium
+    -   Control: high
+    -   Realism: medium
+    -   Ethics: relatively easy
+
+-   Just do it yourself: build a product
+
+    -   Cost: high
+    -   Control: high
+    -   Realism: high
+    -   Ethics: relatively easy
+    -   Potencial: more research -&gt; better product -&gt; more users
+        -&gt; more research -&gt; …
+
+-   Pensar em qual é mais adequado para o contexto da pesquisa.
 
 ## Zero Variable Cost Data and Musiclab
 
-…
+-   Experimentos em escala.
+
+-   Pq escala é importante? Permite fazer coisas que antes as pessoas
+    nem imaginavam que era possível.
+
+-   Experimento em digital age permite fazer experimentos grandes!
+
+-   Em experimentos analógicos, o aumento do numero de participantes
+    causa um aumento do custo da pesquisa. Isso não acontecce com
+    experimentos digitais. O aumento de participantes não causa um
+    aumento do custo de pesquisa.
+
+-   Principais fontes de custos de “variables” - cada pessoa q participa
+    na pesquisa: tempo da equipe, pagamento das pessoas participantes.
+    Solução: automatização (os experimentos devem acontecer enquanto
+    dormimos), desing experimentos legais (enjoyable).
+
+-   Custo zero de variável para quem?
 
 ## 3Rs
 
-…
+Baseado em: The principles of humane experimental technique - by Russell
+and Burch (1959)
+
+-   Replace experiments with less invasive methods
+
+-   Refine treatments to make them less harmful
+
+-   Reduce the number of participants.
+
+-   Humane methods.
 
 ## Informações da sessão
 
