@@ -53,7 +53,7 @@ Tentativa 3: WS
 
 
 library(magrittr, include.only = "%>%")
-url_wikipedia <- "https://pt.wikipedia.org/w/index.php?title=Jair_Bolsonaro&offset=&limit=500&action=history"
+url_wikipedia <- "https://pt.wikipedia.org/w/index.php?title=Jair_Bolsonaro&offset=&limit=10&action=history"
 
 
 html <- rvest::read_html(url_wikipedia)
@@ -62,8 +62,8 @@ itens <- rvest::html_node(html, xpath = '//*[@id="pagehistory"]') %>%
   rvest::html_nodes("li") 
 
 
-buscar_classe <- function(classe){
-  itens %>%
+buscar_classe <- function(lista, classe){
+  lista %>%
   purrr::map( ~ rvest::html_nodes(.x, glue::glue("[class='{classe}']"))) %>%
   purrr::map( function(.x){
     aux <- rvest::html_text(.x)
@@ -75,17 +75,28 @@ buscar_classe <- function(classe){
   }) %>%
   purrr::as_vector()
 } 
- 
-data <- buscar_classe("mw-changeslist-date")
-caracteres_removidos <- buscar_classe("mw-plusminus-neg mw-diff-bytes")
-caracteres_adicionados <- buscar_classe("mw-plusminus-pos mw-diff-bytes")
 
-tabela_suja <- tibble::tibble(data, caracteres_removidos, caracteres_adicionados)
+buscar_id <- function(lista){
+  lista %>% rvest::html_attr("data-mw-revid")
+}
+  
+id <- buscar_id(itens)
+contribuidor <- buscar_classe(itens, "mw-userlink")
+data <- buscar_classe(itens, "mw-changeslist-date")
+secao_alterada <- buscar_classe(itens, "autocomment")
+comentario <- buscar_classe(itens, "comment comment--without-parentheses") 
+caracteres_removidos <- buscar_classe(itens, "mw-plusminus-neg mw-diff-bytes")
+caracteres_adicionados <- buscar_classe(itens, "mw-plusminus-pos mw-diff-bytes")
+
+tabela_suja <- tibble::tibble(id, 
+                              contribuidor,
+                              data,
+                              secao_alterada,
+                              comentario,
+                              caracteres_removidos,
+                              caracteres_adicionados)
 
 dplyr::glimpse(tabela_suja)
-
-# padrao usado para ver o tema
-# <a href="/wiki/Jair_Bolsonaro#Postura_diante_da_pandemia_de_COVID-19" title="Jair Bolsonaro">→‎Postura diante da pandemia de COVID-19</a>
 
 ```
 
