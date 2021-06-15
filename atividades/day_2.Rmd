@@ -50,26 +50,23 @@ Tentativa 3: WS
 library(magrittr, include.only = "%>%")
 
 buscar_termos <- function(termo, limite = "10000") {
-  # termo <- "Jair_Bolsonaro"
-  # limite <- "20"
   
-  
+  termo_pesquisa <- termo %>% stringr::str_replace_all(" ", "_")
+
   url_wikipedia <-
     glue::glue(
-      "https://pt.wikipedia.org/w/index.php?title={termo}&offset=&limit={limite}&action=history"
+      "https://pt.wikipedia.org/w/index.php?title={termo_pesquisa}&offset=&limit={limite}&action=history"
     )
+  url_encoded <- utils::URLencode(url_wikipedia)
   
-  
-  html <- rvest::read_html(url_wikipedia)
-  
+  html <- rvest::read_html(url_encoded)
+
   itens <-
     rvest::html_node(html, xpath = '//*[@id="pagehistory"]') %>%
     rvest::html_nodes("li")
   
 
   buscar_classe <- function(lista, classe) {
-    # lista <- itens
-    # classe <- "secao_alterada"
     lista %>%
       purrr::map(~ rvest::html_nodes(.x, glue::glue("[class='{classe}']"))) %>%
       purrr::map(function(.x) {
@@ -108,8 +105,19 @@ buscar_termos <- function(termo, limite = "10000") {
   minor_edit <- buscar_classe(itens, "minoredit")
   
   
-  tag <-
-    buscar_classe(itens, "mw-tag-marker mw-tag-marker-visualeditor")
+  tag <- itens %>% 
+  purrr::map(~ rvest::html_nodes(.x, "[class='mw-tag-markers']") ) %>% 
+  purrr::map( ~  rvest::html_elements(.x, "span")) %>% 
+   purrr::map(function(.x) {
+        aux <- rvest::html_text(.x)
+        if (length(aux) == 0) {
+          return(NA_character_)
+        } else {
+          return(aux)
+        }
+      }) %>% 
+  purrr::map(~ knitr::combine_words(.x, sep = "; ", and = "; ")) %>% 
+  purrr::as_vector()
   
 
   tabela_suja <- tibble::tibble(
@@ -128,39 +136,51 @@ buscar_termos <- function(termo, limite = "10000") {
 }
 
 
-tabela_suja <- buscar_termos("Jair_Bolsonaro")
+tabela_suja <- buscar_termos("Jair Bolsonaro")
 dplyr::glimpse(tabela_suja)
 
 readr::write_rds(tabela_suja,
                  "dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds")
 
-## ARRUMAR
-
-# arrumar as tags
-#
-# itens %>%
-#   rvest::html_nodes("[class='mw-tag-markers']") %>% .[[1]]
-# verificar os comentários que estão com NA
-
 ```
 
 ## Limpeza de dados
 
-```{r echo=TRUE}
+```{r eval=FALSE, include=TRUE}
 library(magrittr, include.only = "%>%")
 tabela_suja <- readr::read_rds("dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds")
 dplyr::glimpse(tabela_suja)
 ```
 
 
-```{r}
-# tabela_suja %>% 
-#   dplyr::mutate(data2 = readr::parse_datetime(data, format = "%Hh%Mmin de %d de %B de %Y"))
+```{r eval=FALSE, include=TRUE}
+df_dados <- tabela_suja %>%
+  tidyr::separate(data, sep = " de ", into = c("horario",  "data"), extra = "merge") %>% 
+  dplyr::mutate(data = readr::parse_date(data, format = "%d de %B de %Y", locale = readr::locale("pt")),
+                caracteres_removidos = stringr::str_remove(caracteres_removidos, "−"),
+                caracteres_removidos = stringr::str_replace_all(caracteres_removidos, " ", ""),
+              # caracteres_removidos = readr::parse_double(caracteres_removidos),
+               caracteres_adicionados = stringr::str_remove(caracteres_adicionados, "\\+"),
+               caracteres_adicionados = stringr::str_replace_all(caracteres_adicionados, " ", ""),
+               #caracteres_adicionados = readr::parse_double(caracteres_adicionados),
+               minor_edit = dplyr::case_when(minor_edit == "m" ~ TRUE,
+                                             TRUE ~ NA),
+               tag = dplyr::case_when(tag == "NA" ~ NA_character_,
+                                             TRUE ~ tag)
+                )
+
+readr::write_rds(df_dados,
+                 "dados/jair_bolsonaro_15-06-2021-dados_tidy.Rds")
 ```
 
+```{r}
+library(magrittr, include.only = "%>%")
+df_dados <- readr::read_rds("dados/jair_bolsonaro_15-06-2021-dados_tidy.Rds")
+dplyr::glimpse(df_dados)
+```
 
 ```{r}
-tabela_suja %>% 
+df_dados %>% 
   dplyr::count(contribuidor, sort = TRUE)
 ```
 
@@ -189,5 +209,7 @@ https://mittechreview.com.br/as-licoes-da-wikipedia-e-suas-limitacoes/
 
 Outra ideia: Percepcao das pessoas usuárias, Experimento de vinheta: o quanto a pagina do wikipedia pode influenciar na percepcao das pessoas como ela ve o bolsonaro, o wikipedia, a colaboracao massiva?
 
+
+Agradecemos: Tiago e turma do SICSS, Julio Trecenti, Fernando Correa, Athos Damiani
 
 

@@ -200,26 +200,23 @@ pre code {
 <pre class="r"><code>library(magrittr, include.only = &quot;%&gt;%&quot;)
 
 buscar_termos &lt;- function(termo, limite = &quot;10000&quot;) {
-  # termo &lt;- &quot;Jair_Bolsonaro&quot;
-  # limite &lt;- &quot;20&quot;
   
-  
+  termo_pesquisa &lt;- termo %&gt;% stringr::str_replace_all(&quot; &quot;, &quot;_&quot;)
+
   url_wikipedia &lt;-
     glue::glue(
-      &quot;https://pt.wikipedia.org/w/index.php?title={termo}&amp;offset=&amp;limit={limite}&amp;action=history&quot;
+      &quot;https://pt.wikipedia.org/w/index.php?title={termo_pesquisa}&amp;offset=&amp;limit={limite}&amp;action=history&quot;
     )
+  url_encoded &lt;- utils::URLencode(url_wikipedia)
   
-  
-  html &lt;- rvest::read_html(url_wikipedia)
-  
+  html &lt;- rvest::read_html(url_encoded)
+
   itens &lt;-
     rvest::html_node(html, xpath = &#39;//*[@id=&quot;pagehistory&quot;]&#39;) %&gt;%
     rvest::html_nodes(&quot;li&quot;)
   
 
   buscar_classe &lt;- function(lista, classe) {
-    # lista &lt;- itens
-    # classe &lt;- &quot;secao_alterada&quot;
     lista %&gt;%
       purrr::map(~ rvest::html_nodes(.x, glue::glue(&quot;[class=&#39;{classe}&#39;]&quot;))) %&gt;%
       purrr::map(function(.x) {
@@ -258,8 +255,19 @@ buscar_termos &lt;- function(termo, limite = &quot;10000&quot;) {
   minor_edit &lt;- buscar_classe(itens, &quot;minoredit&quot;)
   
   
-  tag &lt;-
-    buscar_classe(itens, &quot;mw-tag-marker mw-tag-marker-visualeditor&quot;)
+  tag &lt;- itens %&gt;% 
+  purrr::map(~ rvest::html_nodes(.x, &quot;[class=&#39;mw-tag-markers&#39;]&quot;) ) %&gt;% 
+  purrr::map( ~  rvest::html_elements(.x, &quot;span&quot;)) %&gt;% 
+   purrr::map(function(.x) {
+        aux &lt;- rvest::html_text(.x)
+        if (length(aux) == 0) {
+          return(NA_character_)
+        } else {
+          return(aux)
+        }
+      }) %&gt;% 
+  purrr::map(~ knitr::combine_words(.x, sep = &quot;; &quot;, and = &quot;; &quot;)) %&gt;% 
+  purrr::as_vector()
   
 
   tabela_suja &lt;- tibble::tibble(
@@ -278,53 +286,64 @@ buscar_termos &lt;- function(termo, limite = &quot;10000&quot;) {
 }
 
 
-tabela_suja &lt;- buscar_termos(&quot;Jair_Bolsonaro&quot;)
+tabela_suja &lt;- buscar_termos(&quot;Jair Bolsonaro&quot;)
 dplyr::glimpse(tabela_suja)
 
 readr::write_rds(tabela_suja,
-                 &quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)
-
-## ARRUMAR
-
-# arrumar as tags
-#
-# itens %&gt;%
-#   rvest::html_nodes(&quot;[class=&#39;mw-tag-markers&#39;]&quot;) %&gt;% .[[1]]
-# verificar os comentários que estão com NA</code></pre>
+                 &quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)</code></pre>
 </div>
 <div id="limpeza-de-dados" class="section level2">
 <h2>Limpeza de dados</h2>
 <pre class="r"><code>library(magrittr, include.only = &quot;%&gt;%&quot;)
 tabela_suja &lt;- readr::read_rds(&quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)
 dplyr::glimpse(tabela_suja)</code></pre>
-<pre><code>## Rows: 3,072
-## Columns: 8
+<pre class="r"><code>df_dados &lt;- tabela_suja %&gt;%
+  tidyr::separate(data, sep = &quot; de &quot;, into = c(&quot;horario&quot;,  &quot;data&quot;), extra = &quot;merge&quot;) %&gt;% 
+  dplyr::mutate(data = readr::parse_date(data, format = &quot;%d de %B de %Y&quot;, locale = readr::locale(&quot;pt&quot;)),
+                caracteres_removidos = stringr::str_remove(caracteres_removidos, &quot;−&quot;),
+                caracteres_removidos = stringr::str_replace_all(caracteres_removidos, &quot; &quot;, &quot;&quot;),
+              # caracteres_removidos = readr::parse_double(caracteres_removidos),
+               caracteres_adicionados = stringr::str_remove(caracteres_adicionados, &quot;\\+&quot;),
+               caracteres_adicionados = stringr::str_replace_all(caracteres_adicionados, &quot; &quot;, &quot;&quot;),
+               #caracteres_adicionados = readr::parse_double(caracteres_adicionados),
+               minor_edit = dplyr::case_when(minor_edit == &quot;m&quot; ~ TRUE,
+                                             TRUE ~ NA),
+               tag = dplyr::case_when(tag == &quot;NA&quot; ~ NA_character_,
+                                             TRUE ~ tag)
+                )
+
+readr::write_rds(df_dados,
+                 &quot;dados/jair_bolsonaro_15-06-2021-dados_tidy.Rds&quot;)</code></pre>
+<pre class="r"><code>library(magrittr, include.only = &quot;%&gt;%&quot;)
+df_dados &lt;- readr::read_rds(&quot;dados/jair_bolsonaro_15-06-2021-dados_tidy.Rds&quot;)
+dplyr::glimpse(df_dados)</code></pre>
+<pre><code>## Rows: 150
+## Columns: 9
 ## $ id                     &lt;chr&gt; &quot;61389039&quot;, &quot;61309066&quot;, &quot;61309064&quot;, &quot;61308947&quot;,…
 ## $ contribuidor           &lt;chr&gt; &quot;Luiz79&quot;, &quot;Érico&quot;, &quot;Érico&quot;, &quot;Luizpuodzius&quot;, &quot;Lu…
-## $ data                   &lt;chr&gt; &quot;20h52min de 14 de junho de 2021&quot;, &quot;17h31min de…
+## $ horario                &lt;chr&gt; &quot;20h52min&quot;, &quot;17h31min&quot;, &quot;17h31min&quot;, &quot;17h10min&quot;,…
+## $ data                   &lt;date&gt; 2021-06-14, 2021-06-03, 2021-06-03, 2021-06-03…
 ## $ comentario             &lt;chr&gt; NA, &quot;→‎Postura diante da pandemia de COVID-19&quot;, …
-## $ caracteres_removidos   &lt;chr&gt; NA, &quot;−12&quot;, NA, &quot;−1&quot;, NA, NA, &quot;−4&quot;, NA, NA, NA, …
-## $ caracteres_adicionados &lt;chr&gt; &quot;+17&quot;, NA, &quot;+2&quot;, NA, &quot;+1 428&quot;, &quot;+732&quot;, NA, &quot;+2 …
-## $ minor_edit             &lt;chr&gt; NA, NA, NA, &quot;m&quot;, NA, NA, &quot;m&quot;, NA, &quot;m&quot;, &quot;m&quot;, &quot;m&quot;…
-## $ tag                    &lt;chr&gt; NA, NA, NA, NA, NA, &quot;Editor Visual&quot;, NA, NA, NA…</code></pre>
-<pre class="r"><code># tabela_suja %&gt;% 
-#   dplyr::mutate(data2 = readr::parse_datetime(data, format = &quot;%Hh%Mmin de %d de %B de %Y&quot;))</code></pre>
-<pre class="r"><code>tabela_suja %&gt;% 
+## $ caracteres_removidos   &lt;dbl&gt; NA, 12, NA, 1, NA, NA, 4, NA, NA, NA, NA, NA, N…
+## $ caracteres_adicionados &lt;dbl&gt; 17, NA, 2, NA, NA, 732, NA, NA, 295, 10, 883, 5…
+## $ minor_edit             &lt;lgl&gt; NA, NA, NA, TRUE, NA, NA, TRUE, NA, TRUE, TRUE,…
+## $ tag                    &lt;chr&gt; &quot;Edição via dispositivo móvel; Edição feita atr…</code></pre>
+<pre class="r"><code>df_dados %&gt;% 
   dplyr::count(contribuidor, sort = TRUE)</code></pre>
-<pre><code>## # A tibble: 629 x 2
-##    contribuidor     n
-##    &lt;chr&gt;        &lt;int&gt;
-##  1 Chronus        576
-##  2 Bageense       263
-##  3 Saturnalia0     64
-##  4 WikiGT          60
-##  5 PauloMSimoes    55
-##  6 Érico           50
-##  7 Yanguas         46
-##  8 Dantadd         45
-##  9 Jasão           45
-## 10 Pórokhov        39
-## # … with 619 more rows</code></pre>
+<pre><code>## # A tibble: 39 x 2
+##    contribuidor         n
+##    &lt;chr&gt;            &lt;int&gt;
+##  1 Chronus             24
+##  2 PauloMSimoes        22
+##  3 Bageense            12
+##  4 Érico               12
+##  5 Luizpuodzius        12
+##  6 GhostP.              7
+##  7 Raphael Figueira     6
+##  8 Theys York           5
+##  9 Ixocactus            4
+## 10 Lechatjaune          3
+## # … with 29 more rows</code></pre>
 </div>
 <div id="métodos-híbridos" class="section level2">
 <h2>Métodos híbridos</h2>
@@ -340,6 +359,7 @@ dplyr::glimpse(tabela_suja)</code></pre>
 </ul>
 <p><a href="https://mittechreview.com.br/as-licoes-da-wikipedia-e-suas-limitacoes/" class="uri">https://mittechreview.com.br/as-licoes-da-wikipedia-e-suas-limitacoes/</a></p>
 <p>Outra ideia: Percepcao das pessoas usuárias, Experimento de vinheta: o quanto a pagina do wikipedia pode influenciar na percepcao das pessoas como ela ve o bolsonaro, o wikipedia, a colaboracao massiva?</p>
+<p>Agradecemos: Tiago e turma do SICSS, Julio Trecenti, Fernando Correa, Athos Damiani</p>
 </div>
 
 
