@@ -298,52 +298,251 @@ readr::write_rds(tabela_suja,
 tabela_suja &lt;- readr::read_rds(&quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)
 dplyr::glimpse(tabela_suja)</code></pre>
 <pre class="r"><code>df_dados &lt;- tabela_suja %&gt;%
-  tidyr::separate(data, sep = &quot; de &quot;, into = c(&quot;horario&quot;,  &quot;data&quot;), extra = &quot;merge&quot;) %&gt;% 
-  dplyr::mutate(data = readr::parse_date(data, format = &quot;%d de %B de %Y&quot;, locale = readr::locale(&quot;pt&quot;)),
-                caracteres_removidos = stringr::str_remove(caracteres_removidos, &quot;−&quot;),
-                caracteres_removidos = stringr::str_replace_all(caracteres_removidos, &quot; &quot;, &quot;&quot;),
-              # caracteres_removidos = readr::parse_double(caracteres_removidos),
-               caracteres_adicionados = stringr::str_remove(caracteres_adicionados, &quot;\\+&quot;),
-               caracteres_adicionados = stringr::str_replace_all(caracteres_adicionados, &quot; &quot;, &quot;&quot;),
-               #caracteres_adicionados = readr::parse_double(caracteres_adicionados),
-               minor_edit = dplyr::case_when(minor_edit == &quot;m&quot; ~ TRUE,
-                                             TRUE ~ NA),
-               tag = dplyr::case_when(tag == &quot;NA&quot; ~ NA_character_,
-                                             TRUE ~ tag)
-                )
+  tidyr::separate(
+    data,
+    sep = &quot; de &quot;,
+    into = c(&quot;horario&quot;,  &quot;data&quot;),
+    extra = &quot;merge&quot;
+  ) %&gt;%
+  dplyr::mutate(
+    data = readr::parse_date(data, format = &quot;%d de %B de %Y&quot;, locale = readr::locale(&quot;pt&quot;)),
+    caracteres_removidos = stringr::str_remove(caracteres_removidos, &quot;−&quot;),
+    caracteres_adicionados = stringr::str_remove(caracteres_adicionados, &quot;\\+&quot;),
+    caracteres_removidos  = stringr::str_remove_all(caracteres_removidos, &quot;\\D&quot;),
+    caracteres_adicionados = stringr::str_remove_all(caracteres_adicionados, &quot;\\D&quot;),
+    caracteres_removidos = readr::parse_double(caracteres_removidos),
+    caracteres_adicionados = readr::parse_double(caracteres_adicionados),
+    caracteres_removidos = tidyr::replace_na(caracteres_removidos, 0),
+    caracteres_adicionados = tidyr::replace_na(caracteres_adicionados, 0),
+    minor_edit = dplyr::case_when(minor_edit == &quot;m&quot; ~ TRUE,
+                                  TRUE ~ NA),
+    tag = dplyr::case_when(tag == &quot;NA&quot; ~ NA_character_,
+                           TRUE ~ tag)
+  ) %&gt;%
+  dplyr::mutate(
+    comentario_original = comentario,
+    secao = stringr::str_extract(comentario, pattern = &quot;→.*:&quot;),
+    secao = stringr::str_remove(secao, pattern = &quot;:.*$&quot;),
+    comentario = stringr::str_remove(comentario, pattern = &quot;→.*:&quot;),
+    secao = dplyr::case_when(stringr::str_detect(comentario, &quot;^→&quot;) ~ comentario,
+                             TRUE ~ secao),
+    secao = stringr::str_remove_all(secao, pattern = &quot;:|→&quot;),
+    secao = stringr::str_trim(secao),
+    comentario = stringr::str_remove(comentario, &quot;^→.*&quot;),
+    comentario = stringr::str_trim(comentario),
+    comentario = dplyr::case_when(comentario == &quot;&quot; ~ NA_character_, TRUE ~ comentario)
+  ) %&gt;%
+  dplyr::relocate(comentario_original, secao, comentario, .before = caracteres_removidos)
 
 readr::write_rds(df_dados,
                  &quot;dados/jair_bolsonaro_15-06-2021-dados_tidy.Rds&quot;)</code></pre>
 <pre class="r"><code>library(magrittr, include.only = &quot;%&gt;%&quot;)
 df_dados &lt;- readr::read_rds(&quot;dados/jair_bolsonaro_15-06-2021-dados_tidy.Rds&quot;)
 dplyr::glimpse(df_dados)</code></pre>
-<pre><code>## Rows: 150
-## Columns: 9
+<pre><code>## Rows: 3,072
+## Columns: 11
 ## $ id                     &lt;chr&gt; &quot;61389039&quot;, &quot;61309066&quot;, &quot;61309064&quot;, &quot;61308947&quot;,…
 ## $ contribuidor           &lt;chr&gt; &quot;Luiz79&quot;, &quot;Érico&quot;, &quot;Érico&quot;, &quot;Luizpuodzius&quot;, &quot;Lu…
 ## $ horario                &lt;chr&gt; &quot;20h52min&quot;, &quot;17h31min&quot;, &quot;17h31min&quot;, &quot;17h10min&quot;,…
 ## $ data                   &lt;date&gt; 2021-06-14, 2021-06-03, 2021-06-03, 2021-06-03…
-## $ comentario             &lt;chr&gt; NA, &quot;→‎Postura diante da pandemia de COVID-19&quot;, …
-## $ caracteres_removidos   &lt;dbl&gt; NA, 12, NA, 1, NA, NA, 4, NA, NA, NA, NA, NA, N…
-## $ caracteres_adicionados &lt;dbl&gt; 17, NA, 2, NA, NA, 732, NA, NA, 295, 10, 883, 5…
+## $ comentario_original    &lt;chr&gt; NA, &quot;→‎Postura diante da pandemia de COVID-19&quot;, …
+## $ secao                  &lt;chr&gt; NA, &quot;‎Postura diante da pandemia de COVID-19&quot;, &quot;‎…
+## $ comentario             &lt;chr&gt; NA, NA, NA, NA, &quot;pandemia poderia ser parte de …
+## $ caracteres_removidos   &lt;dbl&gt; 0, 12, 0, 1, 0, 0, 4, 0, 0, 0, 0, 0, 0, 306, 0,…
+## $ caracteres_adicionados &lt;dbl&gt; 17, 0, 2, 0, 1428, 732, 0, 2935, 295, 10, 883, …
 ## $ minor_edit             &lt;lgl&gt; NA, NA, NA, TRUE, NA, NA, TRUE, NA, TRUE, TRUE,…
 ## $ tag                    &lt;chr&gt; &quot;Edição via dispositivo móvel; Edição feita atr…</code></pre>
-<pre class="r"><code>df_dados %&gt;% 
-  dplyr::count(contribuidor, sort = TRUE)</code></pre>
-<pre><code>## # A tibble: 39 x 2
-##    contribuidor         n
-##    &lt;chr&gt;            &lt;int&gt;
-##  1 Chronus             24
-##  2 PauloMSimoes        22
-##  3 Bageense            12
-##  4 Érico               12
-##  5 Luizpuodzius        12
-##  6 GhostP.              7
-##  7 Raphael Figueira     6
-##  8 Theys York           5
-##  9 Ixocactus            4
-## 10 Lechatjaune          3
-## # … with 29 more rows</code></pre>
+<ul>
+<li>Pensando em número de contribuicoes:</li>
+</ul>
+<pre class="r"><code>lista_contribuidores_numero &lt;- df_dados %&gt;% 
+  dplyr::count(contribuidor, sort = TRUE) 
+
+
+lista_contribuidores_numero %&gt;% 
+  dplyr::slice(1:10) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">contribuidor</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Chronus</td>
+<td align="right">576</td>
+</tr>
+<tr class="even">
+<td align="left">Bageense</td>
+<td align="right">263</td>
+</tr>
+<tr class="odd">
+<td align="left">Saturnalia0</td>
+<td align="right">64</td>
+</tr>
+<tr class="even">
+<td align="left">WikiGT</td>
+<td align="right">60</td>
+</tr>
+<tr class="odd">
+<td align="left">PauloMSimoes</td>
+<td align="right">55</td>
+</tr>
+<tr class="even">
+<td align="left">Érico</td>
+<td align="right">50</td>
+</tr>
+<tr class="odd">
+<td align="left">Yanguas</td>
+<td align="right">46</td>
+</tr>
+<tr class="even">
+<td align="left">Dantadd</td>
+<td align="right">45</td>
+</tr>
+<tr class="odd">
+<td align="left">Jasão</td>
+<td align="right">45</td>
+</tr>
+<tr class="even">
+<td align="left">Pórokhov</td>
+<td align="right">39</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Pensando em número de caracteres alterados:</li>
+</ul>
+<pre class="r"><code>lista_contribuidores_caracteres &lt;- df_dados %&gt;% 
+  dplyr::mutate(qnt_mudancas = caracteres_adicionados + caracteres_removidos) %&gt;% 
+  dplyr::group_by(contribuidor) %&gt;% 
+  dplyr::summarise(acumulado_mudancas = sum(qnt_mudancas)) %&gt;% 
+  dplyr::arrange(desc(acumulado_mudancas)) 
+
+lista_contribuidores_caracteres %&gt;% 
+  dplyr::slice(1:10) %&gt;%
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">contribuidor</th>
+<th align="right">acumulado_mudancas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Chronus</td>
+<td align="right">524694</td>
+</tr>
+<tr class="even">
+<td align="left">191.220.126.68</td>
+<td align="right">194673</td>
+</tr>
+<tr class="odd">
+<td align="left">Leon saudanha</td>
+<td align="right">130134</td>
+</tr>
+<tr class="even">
+<td align="left">Bageense</td>
+<td align="right">95030</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitor Mazuco</td>
+<td align="right">82665</td>
+</tr>
+<tr class="even">
+<td align="left">179.176.200.245</td>
+<td align="right">79817</td>
+</tr>
+<tr class="odd">
+<td align="left">Salebot</td>
+<td align="right">77860</td>
+</tr>
+<tr class="even">
+<td align="left">179.189.92.2</td>
+<td align="right">74720</td>
+</tr>
+<tr class="odd">
+<td align="left">201.19.6.89</td>
+<td align="right">59670</td>
+</tr>
+<tr class="even">
+<td align="left">Luizpuodzius</td>
+<td align="right">54854</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>De quem sao os IPs que aparecem??</p></li>
+<li><p>As pessoas sao as que mais fazem contribuicoes sao as mesmas que fizeram o maior numero de modificacoes?</p></li>
+</ul>
+<p>Não… tem umas pessoas que fizeram mudancas poucas vezes mas alterara muitas coisas.</p>
+<pre class="r"><code>lista_contribuidores &lt;- dplyr::full_join(lista_contribuidores_caracteres, lista_contribuidores_numero)</code></pre>
+<pre><code>## Joining, by = &quot;contribuidor&quot;</code></pre>
+<pre class="r"><code>lista_contribuidores %&gt;% head(10) %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">contribuidor</th>
+<th align="right">acumulado_mudancas</th>
+<th align="right">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Chronus</td>
+<td align="right">524694</td>
+<td align="right">576</td>
+</tr>
+<tr class="even">
+<td align="left">191.220.126.68</td>
+<td align="right">194673</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">Leon saudanha</td>
+<td align="right">130134</td>
+<td align="right">7</td>
+</tr>
+<tr class="even">
+<td align="left">Bageense</td>
+<td align="right">95030</td>
+<td align="right">263</td>
+</tr>
+<tr class="odd">
+<td align="left">Vitor Mazuco</td>
+<td align="right">82665</td>
+<td align="right">8</td>
+</tr>
+<tr class="even">
+<td align="left">179.176.200.245</td>
+<td align="right">79817</td>
+<td align="right">4</td>
+</tr>
+<tr class="odd">
+<td align="left">Salebot</td>
+<td align="right">77860</td>
+<td align="right">35</td>
+</tr>
+<tr class="even">
+<td align="left">179.189.92.2</td>
+<td align="right">74720</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">201.19.6.89</td>
+<td align="right">59670</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">Luizpuodzius</td>
+<td align="right">54854</td>
+<td align="right">32</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="métodos-híbridos" class="section level2">
 <h2>Métodos híbridos</h2>
@@ -351,6 +550,23 @@ dplyr::glimpse(df_dados)</code></pre>
 <li>Ideia de rede: quem contribui na pagina do bolsonaro, contribui em quais paginas? <a href="https://xtools.wmflabs.org/topedits/pt.wikipedia.org/Bageense/0" class="uri">https://xtools.wmflabs.org/topedits/pt.wikipedia.org/Bageense/0</a></li>
 </ul>
 <p>Curiosidade enviada por outra pessoa: Bageense é quem nasceu em Bagé -RS. É uma cidade com um eleitorado extremamente conservador. Talvez seja útil</p>
+<pre class="r"><code>buscar_lista_contrib &lt;- function(id_contribuidor) {
+  url &lt;-
+    glue::glue(&quot;https://xtools.wmflabs.org/topedits/pt.wikipedia.org/{id_contribuidor}/0&quot;)
+  url_encoded &lt;- utils::URLencode(url)
+  
+  html &lt;- rvest::read_html(url_encoded)
+  
+  html %&gt;%
+    rvest::html_node(xpath = &#39;//*[@class=&quot;table table-bordered table-hover table-striped topedits-namespace-table xt-show-hide--target&quot;]&#39;) %&gt;%
+    rvest::html_table()
+}
+
+# REMOVER IPs para buscar!
+# lista_contribuidores$contribuidor %&gt;% 
+#   stringr::str_detect(pattern = &quot;&quot;)
+# 
+# buscar_lista_contrib(lista_contribuidores$contribuidor[1])</code></pre>
 <ul>
 <li><p>IPs: qual é a origem?? <a href="https://en.wikipedia.org/wiki/Wikipedia:IP_users" class="uri">https://en.wikipedia.org/wiki/Wikipedia:IP_users</a> a partir de onde essas informacoes estão sendo feitas??</p></li>
 <li><p>O que ta sendo alterado? olhar o que foi removido</p></li>
@@ -359,7 +575,7 @@ dplyr::glimpse(df_dados)</code></pre>
 </ul>
 <p><a href="https://mittechreview.com.br/as-licoes-da-wikipedia-e-suas-limitacoes/" class="uri">https://mittechreview.com.br/as-licoes-da-wikipedia-e-suas-limitacoes/</a></p>
 <p>Outra ideia: Percepcao das pessoas usuárias, Experimento de vinheta: o quanto a pagina do wikipedia pode influenciar na percepcao das pessoas como ela ve o bolsonaro, o wikipedia, a colaboracao massiva?</p>
-<p>Agradecemos: Tiago e turma do SICSS, Julio Trecenti, Fernando Correa, Athos Damiani</p>
+<p>Agradecemos: - Ideias: Tiago e turma do SICSS - Ajuda com código: Jean Prado, Julio Trecenti, Fernando Correa, Athos Damiani</p>
 </div>
 
 

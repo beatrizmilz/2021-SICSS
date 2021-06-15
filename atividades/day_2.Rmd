@@ -155,7 +155,6 @@ dplyr::glimpse(tabela_suja)
 
 ```{r eval=FALSE, include=TRUE}
 
-
 df_dados <- tabela_suja %>%
   tidyr::separate(
     data,
@@ -167,8 +166,12 @@ df_dados <- tabela_suja %>%
     data = readr::parse_date(data, format = "%d de %B de %Y", locale = readr::locale("pt")),
     caracteres_removidos = stringr::str_remove(caracteres_removidos, "−"),
     caracteres_adicionados = stringr::str_remove(caracteres_adicionados, "\\+"),
-    caracteres_adicionados = stringr::str_replace_all(caracteres_adicionados, " ", ""),
-    #caracteres_adicionados = readr::parse_double(caracteres_adicionados),
+    caracteres_removidos  = stringr::str_remove_all(caracteres_removidos, "\\D"),
+    caracteres_adicionados = stringr::str_remove_all(caracteres_adicionados, "\\D"),
+    caracteres_removidos = readr::parse_double(caracteres_removidos),
+    caracteres_adicionados = readr::parse_double(caracteres_adicionados),
+    caracteres_removidos = tidyr::replace_na(caracteres_removidos, 0),
+    caracteres_adicionados = tidyr::replace_na(caracteres_adicionados, 0),
     minor_edit = dplyr::case_when(minor_edit == "m" ~ TRUE,
                                   TRUE ~ NA),
     tag = dplyr::case_when(tag == "NA" ~ NA_character_,
@@ -178,7 +181,6 @@ df_dados <- tabela_suja %>%
     comentario_original = comentario,
     secao = stringr::str_extract(comentario, pattern = "→.*:"),
     secao = stringr::str_remove(secao, pattern = ":.*$"),
-    
     comentario = stringr::str_remove(comentario, pattern = "→.*:"),
     secao = dplyr::case_when(stringr::str_detect(comentario, "^→") ~ comentario,
                              TRUE ~ secao),
@@ -190,8 +192,6 @@ df_dados <- tabela_suja %>%
   ) %>%
   dplyr::relocate(comentario_original, secao, comentario, .before = caracteres_removidos)
 
-# arrumar parse
-
 readr::write_rds(df_dados,
                  "dados/jair_bolsonaro_15-06-2021-dados_tidy.Rds")
 ```
@@ -202,10 +202,44 @@ df_dados <- readr::read_rds("dados/jair_bolsonaro_15-06-2021-dados_tidy.Rds")
 dplyr::glimpse(df_dados)
 ```
 
+- Pensando em número de contribuicoes:
+
 ```{r}
-df_dados %>% 
-  dplyr::count(contribuidor, sort = TRUE)
+lista_contribuidores_numero <- df_dados %>% 
+  dplyr::count(contribuidor, sort = TRUE) 
+
+
+lista_contribuidores_numero %>% 
+  dplyr::slice(1:10) %>% 
+  knitr::kable()
 ```
+
+- Pensando em número de caracteres alterados:
+
+```{r}
+lista_contribuidores_caracteres <- df_dados %>% 
+  dplyr::mutate(qnt_mudancas = caracteres_adicionados + caracteres_removidos) %>% 
+  dplyr::group_by(contribuidor) %>% 
+  dplyr::summarise(acumulado_mudancas = sum(qnt_mudancas)) %>% 
+  dplyr::arrange(desc(acumulado_mudancas)) 
+
+lista_contribuidores_caracteres %>% 
+  dplyr::slice(1:10) %>%
+  knitr::kable()
+```
+
+- De quem sao os IPs que aparecem??
+
+- As pessoas sao as que mais fazem contribuicoes sao as mesmas que fizeram o maior numero de modificacoes?
+
+Não... tem umas pessoas que fizeram mudancas poucas vezes mas alterara muitas coisas.
+
+```{r}
+lista_contribuidores <- dplyr::full_join(lista_contribuidores_caracteres, lista_contribuidores_numero)
+
+lista_contribuidores %>% head(10) %>% knitr::kable()
+```
+
 
 ## Métodos híbridos
 
@@ -213,6 +247,30 @@ df_dados %>%
 https://xtools.wmflabs.org/topedits/pt.wikipedia.org/Bageense/0
 
 Curiosidade enviada por outra pessoa: Bageense é quem nasceu em Bagé -RS. É uma cidade com um eleitorado extremamente conservador. Talvez seja útil
+
+```{r}
+
+
+
+buscar_lista_contrib <- function(id_contribuidor) {
+  url <-
+    glue::glue("https://xtools.wmflabs.org/topedits/pt.wikipedia.org/{id_contribuidor}/0")
+  url_encoded <- utils::URLencode(url)
+  
+  html <- rvest::read_html(url_encoded)
+  
+  html %>%
+    rvest::html_node(xpath = '//*[@class="table table-bordered table-hover table-striped topedits-namespace-table xt-show-hide--target"]') %>%
+    rvest::html_table()
+}
+
+# REMOVER IPs para buscar!
+# lista_contribuidores$contribuidor %>% 
+#   stringr::str_detect(pattern = "")
+# 
+# buscar_lista_contrib(lista_contribuidores$contribuidor[1])
+```
+
 
 - IPs: qual é a origem??  https://en.wikipedia.org/wiki/Wikipedia:IP_users a partir de onde essas informacoes estão sendo feitas??
 
@@ -224,15 +282,14 @@ Curiosidade enviada por outra pessoa: Bageense é quem nasceu em Bagé -RS. É u
 - Netwar -- psyops. quem coloca o conteudo, e o que? batalha discursiva. debate para decidir "a verdade". quais redes as pessoas editoras e revisoras participam?
 
 
-
-
-
 https://mittechreview.com.br/as-licoes-da-wikipedia-e-suas-limitacoes/
 
 
 Outra ideia: Percepcao das pessoas usuárias, Experimento de vinheta: o quanto a pagina do wikipedia pode influenciar na percepcao das pessoas como ela ve o bolsonaro, o wikipedia, a colaboracao massiva?
 
 
-Agradecemos: Tiago e turma do SICSS, Julio Trecenti, Fernando Correa, Athos Damiani
+Agradecemos: 
+  - Ideias: Tiago e turma do SICSS
+  - Ajuda com código: Jean Prado, Julio Trecenti, Fernando Correa, Athos Damiani
 
 
