@@ -1,0 +1,83 @@
+---
+title: "Coletando dados digitais"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Fonte dos dados: Wikipedia
+
+Parte 1: mudanças na página de wikipedia
+Pergunta: tentar descobrir se existe um padrão nas alteracoes do verbete no wikipedia que reflita um contexto maior no país .
+
+- https://pt.wikipedia.org/w/index.php?title=Discuss%C3%A3o:Jair_Bolsonaro&action=history
+
+Parte 2: Discussão nas alteração
+
+Objetivo: verificar temas discutidos, fazer uma análise de texto, topic model.
+
+Pergunta: tentar descobrir se existe um padrão nas discussões que reflita um contexto maior no país .
+
+- https://pt.wikipedia.org/wiki/Discuss%C3%A3o:Jair_Bolsonaro
+
+- Inicialmente: Bolsonaro
+
+
+## Parte 1
+
+Tentativa 1:
+- Encontramos um pacote chamado WikipediR, porém a documentação não apresenta exemplos e não é atualizado há 4 anos.
+
+Tentativa 2: API 
+
+https://pt.wikipedia.org/w/api.php
+
+
+
+Tentativa 3: WS
+
+```{r}
+library(magrittr, include.only = "%>%")
+url_wikipedia <- "https://pt.wikipedia.org/w/index.php?title=Jair_Bolsonaro&offset=&limit=500&action=history"
+
+
+html <- rvest::read_html(url_wikipedia)
+
+itens <- rvest::html_node(html, xpath = '//*[@id="pagehistory"]') %>% 
+  rvest::html_nodes("li") 
+
+
+tabela <- itens %>%
+  
+
+  purrr::map_df(~ {
+    tibble::tibble(
+      data = rvest::html_nodes(.x, "[class='mw-changeslist-date']") %>%
+        rvest::html_text()#,
+      # caracteres_removidos = rvest::html_nodes(.x, "[class='mw-plusminus-neg mw-diff-bytes']") %>%
+      #   rvest::html_text(),
+      # caracteres_adicionados = rvest::html_nodes(.x, "[class='mw-plusminus-pos mw-diff-bytes']") %>%
+      #   rvest::html_text()
+    )
+    
+  })
+
+  
+  
+itens %>% 
+rvest::html_nodes("[class='mw-plusminus-neg mw-diff-bytes']") %>% 
+  rvest::html_text()
+
+# quem fez a modificacao?
+# id da modificacao
+# data/hora
+# quantos caracteres mudou
+
+# padrao usado para ver o tema
+# <a href="/wiki/Jair_Bolsonaro#Postura_diante_da_pandemia_de_COVID-19" title="Jair Bolsonaro">→‎Postura diante da pandemia de COVID-19</a>
+
+```
+
+
