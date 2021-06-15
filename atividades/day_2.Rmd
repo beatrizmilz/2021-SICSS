@@ -154,20 +154,43 @@ dplyr::glimpse(tabela_suja)
 
 
 ```{r eval=FALSE, include=TRUE}
+
+
 df_dados <- tabela_suja %>%
-  tidyr::separate(data, sep = " de ", into = c("horario",  "data"), extra = "merge") %>% 
-  dplyr::mutate(data = readr::parse_date(data, format = "%d de %B de %Y", locale = readr::locale("pt")),
-                caracteres_removidos = stringr::str_remove(caracteres_removidos, "−"),
-                caracteres_removidos = stringr::str_replace_all(caracteres_removidos, " ", ""),
-              # caracteres_removidos = readr::parse_double(caracteres_removidos),
-               caracteres_adicionados = stringr::str_remove(caracteres_adicionados, "\\+"),
-               caracteres_adicionados = stringr::str_replace_all(caracteres_adicionados, " ", ""),
-               #caracteres_adicionados = readr::parse_double(caracteres_adicionados),
-               minor_edit = dplyr::case_when(minor_edit == "m" ~ TRUE,
-                                             TRUE ~ NA),
-               tag = dplyr::case_when(tag == "NA" ~ NA_character_,
-                                             TRUE ~ tag)
-                )
+  tidyr::separate(
+    data,
+    sep = " de ",
+    into = c("horario",  "data"),
+    extra = "merge"
+  ) %>%
+  dplyr::mutate(
+    data = readr::parse_date(data, format = "%d de %B de %Y", locale = readr::locale("pt")),
+    caracteres_removidos = stringr::str_remove(caracteres_removidos, "−"),
+    caracteres_adicionados = stringr::str_remove(caracteres_adicionados, "\\+"),
+    caracteres_adicionados = stringr::str_replace_all(caracteres_adicionados, " ", ""),
+    #caracteres_adicionados = readr::parse_double(caracteres_adicionados),
+    minor_edit = dplyr::case_when(minor_edit == "m" ~ TRUE,
+                                  TRUE ~ NA),
+    tag = dplyr::case_when(tag == "NA" ~ NA_character_,
+                           TRUE ~ tag)
+  ) %>%
+  dplyr::mutate(
+    comentario_original = comentario,
+    secao = stringr::str_extract(comentario, pattern = "→.*:"),
+    secao = stringr::str_remove(secao, pattern = ":.*$"),
+    
+    comentario = stringr::str_remove(comentario, pattern = "→.*:"),
+    secao = dplyr::case_when(stringr::str_detect(comentario, "^→") ~ comentario,
+                             TRUE ~ secao),
+    secao = stringr::str_remove_all(secao, pattern = ":|→"),
+    secao = stringr::str_trim(secao),
+    comentario = stringr::str_remove(comentario, "^→.*"),
+    comentario = stringr::str_trim(comentario),
+    comentario = dplyr::case_when(comentario == "" ~ NA_character_, TRUE ~ comentario)
+  ) %>%
+  dplyr::relocate(comentario_original, secao, comentario, .before = caracteres_removidos)
+
+# arrumar parse
 
 readr::write_rds(df_dados,
                  "dados/jair_bolsonaro_15-06-2021-dados_tidy.Rds")
