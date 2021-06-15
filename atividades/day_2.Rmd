@@ -2,6 +2,7 @@
 title: "Coletando dados digitais"
 author: 
   - "Beatriz Milz"
+  - "Juliana Brandão"
   - "Luana Calzavara"
   - "Nico Linares"
 output: html_document
@@ -43,8 +44,10 @@ https://pt.wikipedia.org/w/api.php
 Tentativa 3: WS
 
 
+## Coleta de dados
 
-```{r echo=TRUE}
+```{r eval=FALSE, include=TRUE}
+
 
 # quem fez a modificacao?
 # id da modificacao
@@ -53,51 +56,91 @@ Tentativa 3: WS
 
 
 library(magrittr, include.only = "%>%")
-url_wikipedia <- "https://pt.wikipedia.org/w/index.php?title=Jair_Bolsonaro&offset=&limit=10&action=history"
 
-
-html <- rvest::read_html(url_wikipedia)
-
-itens <- rvest::html_node(html, xpath = '//*[@id="pagehistory"]') %>% 
-  rvest::html_nodes("li") 
-
-
-buscar_classe <- function(lista, classe){
-  lista %>%
-  purrr::map( ~ rvest::html_nodes(.x, glue::glue("[class='{classe}']"))) %>%
-  purrr::map( function(.x){
-    aux <- rvest::html_text(.x)
-    if(length(aux) == 0){
-      return(NA_character_)
-    } else {
-      return(aux)
-    }
-  }) %>%
-  purrr::as_vector()
-} 
-
-buscar_id <- function(lista){
-  lista %>% rvest::html_attr("data-mw-revid")
-}
+buscar_termos <- function(termo, limite = "10000") {
+  # termo <- "Jair_Bolsonaro"
+  # limite <- "1000000"
   
-id <- buscar_id(itens)
-contribuidor <- buscar_classe(itens, "mw-userlink")
-data <- buscar_classe(itens, "mw-changeslist-date")
-secao_alterada <- buscar_classe(itens, "autocomment")
-comentario <- buscar_classe(itens, "comment comment--without-parentheses") 
-caracteres_removidos <- buscar_classe(itens, "mw-plusminus-neg mw-diff-bytes")
-caracteres_adicionados <- buscar_classe(itens, "mw-plusminus-pos mw-diff-bytes")
+  
+  url_wikipedia <-
+    glue::glue(
+      "https://pt.wikipedia.org/w/index.php?title={termo}&offset=&limit={limite}&action=history"
+    )
+  
+  
+  html <- rvest::read_html(url_wikipedia)
+  
+  itens <-
+    rvest::html_node(html, xpath = '//*[@id="pagehistory"]') %>%
+    rvest::html_nodes("li")
+  
+  
+  buscar_classe <- function(lista, classe) {
+    # lista <- itens
+    # classe <- "secao_alterada"
+    lista %>%
+      purrr::map( ~ rvest::html_nodes(.x, glue::glue("[class='{classe}']"))) %>%
+      purrr::map(function(.x) {
+        aux <- rvest::html_text(.x)
+        if (length(aux) == 0) {
+          return(NA_character_)
+        } else {
+          return(aux)
+        }
+      }) %>%
+      purrr::as_vector()  # é aqui que ta dando problema
+  }
+  
+  buscar_id <- function(lista) {
+    lista %>% rvest::html_attr("data-mw-revid")
+  }
+  
+  id <- buscar_id(itens)
+  contribuidor <- buscar_classe(itens, "mw-userlink")
+  data <- buscar_classe(itens, "mw-changeslist-date")
+  secao_alterada <- buscar_classe(itens, "autocomment")
+  comentario <-
+    buscar_classe(itens, "comment comment--without-parentheses")
+  caracteres_removidos <-
+    buscar_classe(itens, "mw-plusminus-neg mw-diff-bytes")
+  caracteres_adicionados <-
+    buscar_classe(itens, "mw-plusminus-pos mw-diff-bytes")
+  tamanho_mudanca_bytes <-
+    buscar_classe(itens, "history-size mw-diff-bytes")
+  minor_edit <- buscar_classe(itens, "minoredit")
+  
+  
+  
+  
+  tabela_suja <- tibble::tibble(
+    id,
+    contribuidor,
+    data,
+    # secao_alterada,
+    comentario,
+    caracteres_removidos,
+    caracteres_adicionados,
+    minor_edit
+  )
+  
+  tabela_suja
+}
 
-tabela_suja <- tibble::tibble(id, 
-                              contribuidor,
-                              data,
-                              secao_alterada,
-                              comentario,
-                              caracteres_removidos,
-                              caracteres_adicionados)
+
+tabela_suja <- buscar_termos("Jair_Bolsonaro")
+dplyr::glimpse(tabela_suja)
+
+readr::write_rds(tabela_suja,
+                 "dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds")
+
+```
+
+## Limpeza de dados
+```{r echo=TRUE}
+tabela_suja <- readr::read_rds("dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds")
+
 
 dplyr::glimpse(tabela_suja)
 
 ```
-
 

@@ -10,6 +10,7 @@
 
 
 <meta name="author" content="Beatriz Milz" />
+<meta name="author" content="Juliana Brandão" />
 <meta name="author" content="Luana Calzavara" />
 <meta name="author" content="Nico Linares" />
 
@@ -168,6 +169,7 @@ pre code {
 
 <h1 class="title toc-ignore">Coletando dados digitais</h1>
 <h4 class="author">Beatriz Milz</h4>
+<h4 class="author">Juliana Brandão</h4>
 <h4 class="author">Luana Calzavara</h4>
 <h4 class="author">Nico Linares</h4>
 
@@ -192,6 +194,9 @@ pre code {
 <p>Tentativa 2: API</p>
 <p><a href="https://pt.wikipedia.org/w/api.php" class="uri">https://pt.wikipedia.org/w/api.php</a></p>
 <p>Tentativa 3: WS</p>
+</div>
+<div id="coleta-de-dados" class="section level2">
+<h2>Coleta de dados</h2>
 <pre class="r"><code># quem fez a modificacao?
 # id da modificacao
 # data/hora
@@ -199,43 +204,98 @@ pre code {
 
 
 library(magrittr, include.only = &quot;%&gt;%&quot;)
-url_wikipedia &lt;- &quot;https://pt.wikipedia.org/w/index.php?title=Jair_Bolsonaro&amp;offset=&amp;limit=500&amp;action=history&quot;
+
+buscar_termos &lt;- function(termo, limite = &quot;10000&quot;) {
+  # termo &lt;- &quot;Jair_Bolsonaro&quot;
+  # limite &lt;- &quot;1000000&quot;
+  
+  
+  url_wikipedia &lt;-
+    glue::glue(
+      &quot;https://pt.wikipedia.org/w/index.php?title={termo}&amp;offset=&amp;limit={limite}&amp;action=history&quot;
+    )
+  
+  
+  html &lt;- rvest::read_html(url_wikipedia)
+  
+  itens &lt;-
+    rvest::html_node(html, xpath = &#39;//*[@id=&quot;pagehistory&quot;]&#39;) %&gt;%
+    rvest::html_nodes(&quot;li&quot;)
+  
+  
+  buscar_classe &lt;- function(lista, classe) {
+    # lista &lt;- itens
+    # classe &lt;- &quot;secao_alterada&quot;
+    lista %&gt;%
+      purrr::map( ~ rvest::html_nodes(.x, glue::glue(&quot;[class=&#39;{classe}&#39;]&quot;))) %&gt;%
+      purrr::map(function(.x) {
+        aux &lt;- rvest::html_text(.x)
+        if (length(aux) == 0) {
+          return(NA_character_)
+        } else {
+          return(aux)
+        }
+      }) %&gt;%
+      purrr::as_vector()  # é aqui que ta dando problema
+  }
+  
+  buscar_id &lt;- function(lista) {
+    lista %&gt;% rvest::html_attr(&quot;data-mw-revid&quot;)
+  }
+  
+  id &lt;- buscar_id(itens)
+  contribuidor &lt;- buscar_classe(itens, &quot;mw-userlink&quot;)
+  data &lt;- buscar_classe(itens, &quot;mw-changeslist-date&quot;)
+  secao_alterada &lt;- buscar_classe(itens, &quot;autocomment&quot;)
+  comentario &lt;-
+    buscar_classe(itens, &quot;comment comment--without-parentheses&quot;)
+  caracteres_removidos &lt;-
+    buscar_classe(itens, &quot;mw-plusminus-neg mw-diff-bytes&quot;)
+  caracteres_adicionados &lt;-
+    buscar_classe(itens, &quot;mw-plusminus-pos mw-diff-bytes&quot;)
+  tamanho_mudanca_bytes &lt;-
+    buscar_classe(itens, &quot;history-size mw-diff-bytes&quot;)
+  minor_edit &lt;- buscar_classe(itens, &quot;minoredit&quot;)
+  
+  
+  
+  
+  tabela_suja &lt;- tibble::tibble(
+    id,
+    contribuidor,
+    data,
+    # secao_alterada,
+    comentario,
+    caracteres_removidos,
+    caracteres_adicionados,
+    minor_edit
+  )
+  
+  tabela_suja
+}
 
 
-html &lt;- rvest::read_html(url_wikipedia)
+tabela_suja &lt;- buscar_termos(&quot;Jair_Bolsonaro&quot;)
+dplyr::glimpse(tabela_suja)
 
-itens &lt;- rvest::html_node(html, xpath = &#39;//*[@id=&quot;pagehistory&quot;]&#39;) %&gt;% 
-  rvest::html_nodes(&quot;li&quot;) 
+readr::write_rds(tabela_suja,
+                 &quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)</code></pre>
+</div>
+<div id="limpeza-de-dados" class="section level2">
+<h2>Limpeza de dados</h2>
+<pre class="r"><code>tabela_suja &lt;- readr::read_rds(&quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)
 
-
-buscar_classe &lt;- function(classe){
-  itens %&gt;%
-  purrr::map( ~ rvest::html_nodes(.x, glue::glue(&quot;[class=&#39;{classe}&#39;]&quot;))) %&gt;%
-  purrr::map( function(.x){
-    aux &lt;- rvest::html_text(.x)
-    if(length(aux) == 0){
-      return(NA_character_)
-    } else {
-      return(aux)
-    }
-  }) %&gt;%
-  purrr::as_vector()
-} 
- 
-data &lt;- buscar_classe(&quot;mw-changeslist-date&quot;)
-caracteres_removidos &lt;- buscar_classe(&quot;mw-plusminus-neg mw-diff-bytes&quot;)
-caracteres_adicionados &lt;- buscar_classe(&quot;mw-plusminus-pos mw-diff-bytes&quot;)
-
-tabela_suja &lt;- tibble::tibble(data, caracteres_removidos, caracteres_adicionados)
 
 dplyr::glimpse(tabela_suja)</code></pre>
-<pre><code>## Rows: 500
-## Columns: 3
+<pre><code>## Rows: 3,072
+## Columns: 7
+## $ id                     &lt;chr&gt; &quot;61389039&quot;, &quot;61309066&quot;, &quot;61309064&quot;, &quot;61308947&quot;,…
+## $ contribuidor           &lt;chr&gt; &quot;Luiz79&quot;, &quot;Érico&quot;, &quot;Érico&quot;, &quot;Luizpuodzius&quot;, &quot;Lu…
 ## $ data                   &lt;chr&gt; &quot;20h52min de 14 de junho de 2021&quot;, &quot;17h31min de…
+## $ comentario             &lt;chr&gt; NA, &quot;→‎Postura diante da pandemia de COVID-19&quot;, …
 ## $ caracteres_removidos   &lt;chr&gt; NA, &quot;−12&quot;, NA, &quot;−1&quot;, NA, NA, &quot;−4&quot;, NA, NA, NA, …
-## $ caracteres_adicionados &lt;chr&gt; &quot;+17&quot;, NA, &quot;+2&quot;, NA, &quot;+1 428&quot;, &quot;+732&quot;, NA, &quot;+2 …</code></pre>
-<pre class="r"><code># padrao usado para ver o tema
-# &lt;a href=&quot;/wiki/Jair_Bolsonaro#Postura_diante_da_pandemia_de_COVID-19&quot; title=&quot;Jair Bolsonaro&quot;&gt;→‎Postura diante da pandemia de COVID-19&lt;/a&gt;</code></pre>
+## $ caracteres_adicionados &lt;chr&gt; &quot;+17&quot;, NA, &quot;+2&quot;, NA, &quot;+1 428&quot;, &quot;+732&quot;, NA, &quot;+2 …
+## $ minor_edit             &lt;chr&gt; NA, NA, NA, &quot;m&quot;, NA, NA, &quot;m&quot;, NA, &quot;m&quot;, &quot;m&quot;, &quot;m&quot;…</code></pre>
 </div>
 
 
