@@ -47,19 +47,11 @@ Tentativa 3: WS
 ## Coleta de dados
 
 ```{r eval=FALSE, include=TRUE}
-
-
-# quem fez a modificacao?
-# id da modificacao
-# data/hora
-# quantos caracteres mudou
-
-
 library(magrittr, include.only = "%>%")
 
 buscar_termos <- function(termo, limite = "10000") {
   # termo <- "Jair_Bolsonaro"
-  # limite <- "1000000"
+  # limite <- "20"
   
   
   url_wikipedia <-
@@ -74,12 +66,12 @@ buscar_termos <- function(termo, limite = "10000") {
     rvest::html_node(html, xpath = '//*[@id="pagehistory"]') %>%
     rvest::html_nodes("li")
   
-  
+
   buscar_classe <- function(lista, classe) {
     # lista <- itens
     # classe <- "secao_alterada"
     lista %>%
-      purrr::map( ~ rvest::html_nodes(.x, glue::glue("[class='{classe}']"))) %>%
+      purrr::map(~ rvest::html_nodes(.x, glue::glue("[class='{classe}']"))) %>%
       purrr::map(function(.x) {
         aux <- rvest::html_text(.x)
         if (length(aux) == 0) {
@@ -96,9 +88,15 @@ buscar_termos <- function(termo, limite = "10000") {
   }
   
   id <- buscar_id(itens)
-  contribuidor <- buscar_classe(itens, "mw-userlink")
+  
+  
+  contribuidor <-
+    itens %>%
+    rvest::html_nodes("bdi") %>%
+    rvest::html_text()
+  
   data <- buscar_classe(itens, "mw-changeslist-date")
-  secao_alterada <- buscar_classe(itens, "autocomment")
+  #secao_alterada <- buscar_classe(itens, "autocomment")
   comentario <-
     buscar_classe(itens, "comment comment--without-parentheses")
   caracteres_removidos <-
@@ -110,8 +108,10 @@ buscar_termos <- function(termo, limite = "10000") {
   minor_edit <- buscar_classe(itens, "minoredit")
   
   
+  tag <-
+    buscar_classe(itens, "mw-tag-marker mw-tag-marker-visualeditor")
   
-  
+
   tabela_suja <- tibble::tibble(
     id,
     contribuidor,
@@ -120,7 +120,8 @@ buscar_termos <- function(termo, limite = "10000") {
     comentario,
     caracteres_removidos,
     caracteres_adicionados,
-    minor_edit
+    minor_edit,
+    tag
   )
   
   tabela_suja
@@ -133,14 +134,43 @@ dplyr::glimpse(tabela_suja)
 readr::write_rds(tabela_suja,
                  "dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds")
 
+## ARRUMAR
+
+# arrumar as tags
+#
+# itens %>%
+#   rvest::html_nodes("[class='mw-tag-markers']") %>% .[[1]]
+# verificar os comentários que estão com NA
+
 ```
 
 ## Limpeza de dados
+
 ```{r echo=TRUE}
+library(magrittr, include.only = "%>%")
 tabela_suja <- readr::read_rds("dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds")
-
-
 dplyr::glimpse(tabela_suja)
-
 ```
 
+
+```{r}
+# tabela_suja %>% 
+#   dplyr::mutate(data2 = readr::parse_datetime(data, format = "%Hh%Mmin de %d de %B de %Y"))
+```
+
+
+```{r}
+tabela_suja %>% 
+  dplyr::count(contribuidor, sort = TRUE)
+```
+
+## Métodos híbridos
+
+- Ideia de rede: quem contribui na pagina do bolsonaro, contribui em quais paginas?
+https://xtools.wmflabs.org/topedits/pt.wikipedia.org/Bageense/0
+
+
+https://mittechreview.com.br/as-licoes-da-wikipedia-e-suas-limitacoes/
+
+
+Outra ideia: Percepcao das pessoas usuárias, Experimento de vinheta: o quanto a pagina do wikipedia pode influenciar na percepcao das pessoas como ela ve o bolsonaro, o wikipedia, a colaboracao massiva?

@@ -197,17 +197,11 @@ pre code {
 </div>
 <div id="coleta-de-dados" class="section level2">
 <h2>Coleta de dados</h2>
-<pre class="r"><code># quem fez a modificacao?
-# id da modificacao
-# data/hora
-# quantos caracteres mudou
-
-
-library(magrittr, include.only = &quot;%&gt;%&quot;)
+<pre class="r"><code>library(magrittr, include.only = &quot;%&gt;%&quot;)
 
 buscar_termos &lt;- function(termo, limite = &quot;10000&quot;) {
   # termo &lt;- &quot;Jair_Bolsonaro&quot;
-  # limite &lt;- &quot;1000000&quot;
+  # limite &lt;- &quot;20&quot;
   
   
   url_wikipedia &lt;-
@@ -222,12 +216,12 @@ buscar_termos &lt;- function(termo, limite = &quot;10000&quot;) {
     rvest::html_node(html, xpath = &#39;//*[@id=&quot;pagehistory&quot;]&#39;) %&gt;%
     rvest::html_nodes(&quot;li&quot;)
   
-  
+
   buscar_classe &lt;- function(lista, classe) {
     # lista &lt;- itens
     # classe &lt;- &quot;secao_alterada&quot;
     lista %&gt;%
-      purrr::map( ~ rvest::html_nodes(.x, glue::glue(&quot;[class=&#39;{classe}&#39;]&quot;))) %&gt;%
+      purrr::map(~ rvest::html_nodes(.x, glue::glue(&quot;[class=&#39;{classe}&#39;]&quot;))) %&gt;%
       purrr::map(function(.x) {
         aux &lt;- rvest::html_text(.x)
         if (length(aux) == 0) {
@@ -244,9 +238,15 @@ buscar_termos &lt;- function(termo, limite = &quot;10000&quot;) {
   }
   
   id &lt;- buscar_id(itens)
-  contribuidor &lt;- buscar_classe(itens, &quot;mw-userlink&quot;)
+  
+  
+  contribuidor &lt;-
+    itens %&gt;%
+    rvest::html_nodes(&quot;bdi&quot;) %&gt;%
+    rvest::html_text()
+  
   data &lt;- buscar_classe(itens, &quot;mw-changeslist-date&quot;)
-  secao_alterada &lt;- buscar_classe(itens, &quot;autocomment&quot;)
+  #secao_alterada &lt;- buscar_classe(itens, &quot;autocomment&quot;)
   comentario &lt;-
     buscar_classe(itens, &quot;comment comment--without-parentheses&quot;)
   caracteres_removidos &lt;-
@@ -258,8 +258,10 @@ buscar_termos &lt;- function(termo, limite = &quot;10000&quot;) {
   minor_edit &lt;- buscar_classe(itens, &quot;minoredit&quot;)
   
   
+  tag &lt;-
+    buscar_classe(itens, &quot;mw-tag-marker mw-tag-marker-visualeditor&quot;)
   
-  
+
   tabela_suja &lt;- tibble::tibble(
     id,
     contribuidor,
@@ -268,7 +270,8 @@ buscar_termos &lt;- function(termo, limite = &quot;10000&quot;) {
     comentario,
     caracteres_removidos,
     caracteres_adicionados,
-    minor_edit
+    minor_edit,
+    tag
   )
   
   tabela_suja
@@ -279,23 +282,57 @@ tabela_suja &lt;- buscar_termos(&quot;Jair_Bolsonaro&quot;)
 dplyr::glimpse(tabela_suja)
 
 readr::write_rds(tabela_suja,
-                 &quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)</code></pre>
+                 &quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)
+
+## ARRUMAR
+
+# arrumar as tags
+#
+# itens %&gt;%
+#   rvest::html_nodes(&quot;[class=&#39;mw-tag-markers&#39;]&quot;) %&gt;% .[[1]]
+# verificar os comentários que estão com NA</code></pre>
 </div>
 <div id="limpeza-de-dados" class="section level2">
 <h2>Limpeza de dados</h2>
-<pre class="r"><code>tabela_suja &lt;- readr::read_rds(&quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)
-
-
+<pre class="r"><code>library(magrittr, include.only = &quot;%&gt;%&quot;)
+tabela_suja &lt;- readr::read_rds(&quot;dados/jair_bolsonaro_15-06-2021-dados_brutos.Rds&quot;)
 dplyr::glimpse(tabela_suja)</code></pre>
 <pre><code>## Rows: 3,072
-## Columns: 7
+## Columns: 8
 ## $ id                     &lt;chr&gt; &quot;61389039&quot;, &quot;61309066&quot;, &quot;61309064&quot;, &quot;61308947&quot;,…
 ## $ contribuidor           &lt;chr&gt; &quot;Luiz79&quot;, &quot;Érico&quot;, &quot;Érico&quot;, &quot;Luizpuodzius&quot;, &quot;Lu…
 ## $ data                   &lt;chr&gt; &quot;20h52min de 14 de junho de 2021&quot;, &quot;17h31min de…
 ## $ comentario             &lt;chr&gt; NA, &quot;→‎Postura diante da pandemia de COVID-19&quot;, …
 ## $ caracteres_removidos   &lt;chr&gt; NA, &quot;−12&quot;, NA, &quot;−1&quot;, NA, NA, &quot;−4&quot;, NA, NA, NA, …
 ## $ caracteres_adicionados &lt;chr&gt; &quot;+17&quot;, NA, &quot;+2&quot;, NA, &quot;+1 428&quot;, &quot;+732&quot;, NA, &quot;+2 …
-## $ minor_edit             &lt;chr&gt; NA, NA, NA, &quot;m&quot;, NA, NA, &quot;m&quot;, NA, &quot;m&quot;, &quot;m&quot;, &quot;m&quot;…</code></pre>
+## $ minor_edit             &lt;chr&gt; NA, NA, NA, &quot;m&quot;, NA, NA, &quot;m&quot;, NA, &quot;m&quot;, &quot;m&quot;, &quot;m&quot;…
+## $ tag                    &lt;chr&gt; NA, NA, NA, NA, NA, &quot;Editor Visual&quot;, NA, NA, NA…</code></pre>
+<pre class="r"><code># tabela_suja %&gt;% 
+#   dplyr::mutate(data2 = readr::parse_datetime(data, format = &quot;%Hh%Mmin de %d de %B de %Y&quot;))</code></pre>
+<pre class="r"><code>tabela_suja %&gt;% 
+  dplyr::count(contribuidor, sort = TRUE)</code></pre>
+<pre><code>## # A tibble: 629 x 2
+##    contribuidor     n
+##    &lt;chr&gt;        &lt;int&gt;
+##  1 Chronus        576
+##  2 Bageense       263
+##  3 Saturnalia0     64
+##  4 WikiGT          60
+##  5 PauloMSimoes    55
+##  6 Érico           50
+##  7 Yanguas         46
+##  8 Dantadd         45
+##  9 Jasão           45
+## 10 Pórokhov        39
+## # … with 619 more rows</code></pre>
+</div>
+<div id="métodos-híbridos" class="section level2">
+<h2>Métodos híbridos</h2>
+<ul>
+<li>Ideia de rede: quem contribui na pagina do bolsonaro, contribui em quais paginas? <a href="https://xtools.wmflabs.org/topedits/pt.wikipedia.org/Bageense/0" class="uri">https://xtools.wmflabs.org/topedits/pt.wikipedia.org/Bageense/0</a></li>
+</ul>
+<p><a href="https://mittechreview.com.br/as-licoes-da-wikipedia-e-suas-limitacoes/" class="uri">https://mittechreview.com.br/as-licoes-da-wikipedia-e-suas-limitacoes/</a></p>
+<p>Outra ideia: Percepcao das pessoas usuárias, Experimento de vinheta: o quanto a pagina do wikipedia pode influenciar na percepcao das pessoas como ela ve o bolsonaro, o wikipedia, a colaboracao massiva?</p>
 </div>
 
 
