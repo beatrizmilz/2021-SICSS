@@ -1,5 +1,9 @@
 ---
 title: "Coletando dados digitais"
+author: 
+  - "Beatriz Milz"
+  - "Luana Calzavara"
+  - "Nico Linares"
 output: html_document
 ---
 
@@ -38,7 +42,16 @@ https://pt.wikipedia.org/w/api.php
 
 Tentativa 3: WS
 
-```{r}
+
+
+```{r echo=TRUE}
+
+# quem fez a modificacao?
+# id da modificacao
+# data/hora
+# quantos caracteres mudou
+
+
 library(magrittr, include.only = "%>%")
 url_wikipedia <- "https://pt.wikipedia.org/w/index.php?title=Jair_Bolsonaro&offset=&limit=500&action=history"
 
@@ -49,31 +62,27 @@ itens <- rvest::html_node(html, xpath = '//*[@id="pagehistory"]') %>%
   rvest::html_nodes("li") 
 
 
-tabela <- itens %>%
-  
+buscar_classe <- function(classe){
+  itens %>%
+  purrr::map( ~ rvest::html_nodes(.x, glue::glue("[class='{classe}']"))) %>%
+  purrr::map( function(.x){
+    aux <- rvest::html_text(.x)
+    if(length(aux) == 0){
+      return(NA_character_)
+    } else {
+      return(aux)
+    }
+  }) %>%
+  purrr::as_vector()
+} 
+ 
+data <- buscar_classe("mw-changeslist-date")
+caracteres_removidos <- buscar_classe("mw-plusminus-neg mw-diff-bytes")
+caracteres_adicionados <- buscar_classe("mw-plusminus-pos mw-diff-bytes")
 
-  purrr::map_df(~ {
-    tibble::tibble(
-      data = rvest::html_nodes(.x, "[class='mw-changeslist-date']") %>%
-        rvest::html_text()#,
-      # caracteres_removidos = rvest::html_nodes(.x, "[class='mw-plusminus-neg mw-diff-bytes']") %>%
-      #   rvest::html_text(),
-      # caracteres_adicionados = rvest::html_nodes(.x, "[class='mw-plusminus-pos mw-diff-bytes']") %>%
-      #   rvest::html_text()
-    )
-    
-  })
+tabela_suja <- tibble::tibble(data, caracteres_removidos, caracteres_adicionados)
 
-  
-  
-itens %>% 
-rvest::html_nodes("[class='mw-plusminus-neg mw-diff-bytes']") %>% 
-  rvest::html_text()
-
-# quem fez a modificacao?
-# id da modificacao
-# data/hora
-# quantos caracteres mudou
+dplyr::glimpse(tabela_suja)
 
 # padrao usado para ver o tema
 # <a href="/wiki/Jair_Bolsonaro#Postura_diante_da_pandemia_de_COVID-19" title="Jair Bolsonaro">→‎Postura diante da pandemia de COVID-19</a>
