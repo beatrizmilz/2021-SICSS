@@ -1,0 +1,63 @@
+---
+title: "Dia 4"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Importar os dados do survey
+```{r}
+library(magrittr, include.only = "%>%")
+url <- "https://docs.google.com/spreadsheets/d/1qtC4lKqWOv9jHkPmbv-aOrVkkRjtwTeOGsmRdOfgNKo/edit?usp=sharing"
+```
+
+```{r}
+# install.packages("googlesheets4")
+df_raw <- googlesheets4::read_sheet(url)
+```
+## Limpeza dos dados
+
+```{r}
+dplyr::glimpse(df_raw)
+
+```
+
+
+```{r}
+df <- df_raw %>%
+  janitor::clean_names() %>%
+  dplyr::rename(
+    "data_hora" = carimbo_de_data_hora,
+    "consentimento" = 2,
+    "idade" = escreva_sua_idade,
+    "raca_etnia" = segundo_a_classificacao_do_ibge_a_sua_cor_raca_etnia_e,
+    "estado" =
+      em_qual_estado_voce_mora_atualmente,
+    "acompanha_covid" =
+      voce_tem_acompanhando_a_cpi_da_covid_19,
+    "onde_acompanha" = por_onde_voce_acompanha_noticias_ou_informacoes_sobre_a_cpi_da_covid_19,
+    "ouviu_falar_tratecov" =
+      voce_ja_ouviu_falar_do_trate_cov,
+    "ouviu_falar_suspensao_tratevoc" = voce_ficou_sabendo_da_suspensao_do_aplicativo_trate_cov,
+    "pq_tratecov_foi_suspenso" = na_sua_opiniao_porque_o_aplicativo_trate_cov_foi_suspenso
+  )
+
+dplyr::glimpse(df)
+
+# Show in New Window
+# Rows: 1
+# Columns: 11
+# $ data_hora                      <dttm> 2021-06-17 15:21:28
+# $ consentimento                  <chr> "Concordo"
+# $ genero                         <chr> "Masculino"
+# $ idade                          <dbl> 63
+# $ raca_etnia                     <chr> "Branca"
+# $ estado                         <chr> "Santa Catarina"
+# $ acompanha_covid                <chr> "Parcialmente"
+# $ onde_acompanha                 <chr> "Plataforma de vídeo (Ex: Yout…
+# $ ouviu_falar_tratecov           <chr> "Não"
+# $ ouviu_falar_suspensao_tratevoc <lgl> NA
+# $ pq_tratecov_foi_suspenso       <lgl> NA
+```
