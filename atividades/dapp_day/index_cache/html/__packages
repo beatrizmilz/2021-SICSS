@@ -1,0 +1,17 @@
+base
+knitr
+rtweet
+tidyverse
+ggplot2
+tibble
+tidyr
+readr
+purrr
+dplyr
+stringr
+forcats
+igraph
+broom
+here
+openssl
+KernSmooth
